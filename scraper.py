@@ -20,6 +20,13 @@ PRODUITS = [
     {"gamme":"Haori","nom":"Haori 4.6 kW","ref":"RAS-B16N4KVRG","url":"https://www.climshop.com/198-haori-ras-b16n4kvrg-ras-16j2avsg.html"},
 ]
 
+def mon_prix(ttc):
+    return round(ttc * 0.80 * 1.40 * 1.20, 2)
+
+def fmt(v):
+    if v is None: return "—"
+    return f"{v:,.2f} €".replace(",", " ").replace(".", ",")
+
 def scrape(p):
     try:
         r = requests.get(p["url"], headers=HEADERS, timeout=15)
@@ -33,7 +40,6 @@ def scrape(p):
     except:
         return {"ttc": None, "ht": None, "ok": False}
 
-# Charger historique
 hist_file = "historique.json"
 historique = {}
 if os.path.exists(hist_file):
@@ -43,9 +49,8 @@ if os.path.exists(hist_file):
 resultats = []
 for p in PRODUITS:
     prix = scrape(p)
-    entry = {**p, **prix, "date": datetime.now().strftime("%d/%m/%Y %H:%M")}
-    # Détecter changement de prix
     prev = historique.get(p["ref"])
+    entry = {**p, **prix, "date": datetime.now().strftime("%d/%m/%Y %H:%M")}
     entry["changed"] = prev is not None and prev != prix["ttc"] and prix["ok"]
     entry["prev_ttc"] = prev
     resultats.append(entry)
@@ -55,16 +60,11 @@ for p in PRODUITS:
 with open(hist_file, "w") as f:
     json.dump(historique, f)
 
-# Grouper par gamme
 gammes = {}
 for r in resultats:
     gammes.setdefault(r["gamme"], []).append(r)
 
 date_maj = datetime.now().strftime("%d/%m/%Y à %Hh%M")
-
-def fmt(v):
-    if v is None: return "—"
-    return f"{v:,.0f} €".replace(",", " ")
 
 def evol(r):
     if not r["ok"] or r["prev_ttc"] is None: return ""
@@ -77,14 +77,16 @@ tables = ""
 for gamme, produits in gammes.items():
     rows = ""
     for r in produits:
+        mp = fmt(mon_prix(r["ttc"])) if r["ok"] else "—"
         rows += f"""<tr>
           <td><strong>{r['nom']}</strong><span class="ref">{r['ref']}</span></td>
           <td class="prix">{fmt(r['ttc'])}</td>
           <td class="ht">{fmt(r['ht'])}</td>
           <td>{evol(r)}</td>
+          <td class="myprix"><span class="mon-prix">{mp}</span></td>
           <td><a href="{r['url']}" target="_blank">Voir →</a></td>
         </tr>"""
-    tables += f'<h2>{gamme}</h2><table><thead><tr><th>Modèle</th><th>Prix TTC</th><th>Prix HT</th><th>Évolution</th><th>Lien</th></tr></thead><tbody>{rows}</tbody></table>'
+    tables += f'<h2>{gamme}</h2><table><thead><tr><th>Modèle</th><th>Prix Climshop TTC</th><th>Prix HT</th><th>Évolution</th><th class="myprix-th">Mon prix</th><th>Lien</th></tr></thead><tbody>{rows}</tbody></table>'
 
 html = f"""<!DOCTYPE html>
 <html lang="fr">
@@ -98,32 +100,39 @@ body{{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d}}
 .header{{background:linear-gradient(135deg,#1a3a5c,#2e86c1);color:#fff;padding:22px 28px 18px}}
 .header h1{{font-size:20px;margin-bottom:4px}}
 .header p{{font-size:12px;opacity:.75;margin-top:4px}}
-.container{{max-width:900px;margin:20px auto;padding:0 14px}}
+.badge{{display:inline-block;background:rgba(255,255,255,.2);border-radius:20px;padding:2px 10px;font-size:11px;margin-top:8px}}
+.container{{max-width:1000px;margin:20px auto;padding:0 14px}}
 h2{{font-size:13px;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.5px;margin:22px 0 8px;padding-left:4px;border-left:3px solid #2e86c1}}
 table{{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.07);margin-bottom:6px}}
 th{{background:#2e86c1;color:#fff;padding:10px 12px;text-align:left;font-size:12px;font-weight:600}}
 th:nth-child(2),th:nth-child(3),td:nth-child(2),td:nth-child(3){{text-align:right}}
+.myprix-th{{background:#1e8449 !important;text-align:right}}
 td{{padding:11px 12px;border-bottom:1px solid #eef2f6;font-size:13px;vertical-align:middle}}
 tr:last-child td{{border-bottom:none}}
 tr:hover td{{background:#f7fafd}}
-.prix{{font-weight:700;font-size:15px;color:#1a3a5c}}
-.ht{{color:#7f8c8d;font-size:12px}}
+.prix{{font-weight:700;font-size:15px;color:#1a3a5c;text-align:right}}
+.ht{{color:#7f8c8d;font-size:12px;text-align:right}}
+.myprix{{background:#eaf4e8;text-align:right}}
+tr:hover td.myprix{{background:#d5f5e3}}
+.mon-prix{{font-weight:700;font-size:15px;color:#1e8449}}
 .ref{{font-size:11px;color:#95a5a6;display:block;margin-top:2px}}
 a{{color:#2e86c1;text-decoration:none;font-size:12px}}
-a:hover{{text-decoration:underline}}
 .up{{color:#e74c3c;font-size:12px}}
 .down{{color:#27ae60;font-size:12px}}
 .stable{{color:#95a5a6;font-size:12px}}
 .footer{{text-align:center;color:#95a5a6;font-size:11px;margin:18px 0 32px}}
-@media(max-width:550px){{th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){{display:none}}}}
+.note{{background:#eaf4e8;border-left:3px solid #1e8449;padding:10px 14px;border-radius:0 6px 6px 0;font-size:12px;color:#1e5631;margin-bottom:20px}}
+@media(max-width:600px){{th:nth-child(3),td:nth-child(3),th:nth-child(4),td:nth-child(4){{display:none}}}}
 </style>
 </head>
 <body>
 <div class="header">
   <h1>❄️ Prix Toshiba — Climshop.com</h1>
   <p>Mise à jour automatique · Dernière vérification : {date_maj}</p>
+  <span class="badge">Mon prix = Climshop −20% × +40% × +20%</span>
 </div>
 <div class="container">
+<div class="note">💡 <strong>Mon prix</strong> = prix Climshop × 0.80 × 1.40 × 1.20</div>
 {tables}
 </div>
 <div class="footer">Mis à jour automatiquement chaque jour via GitHub Actions · Source : climshop.com</div>
