@@ -57,7 +57,7 @@ MARQUES = {
         "produits": [
             {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 2.0 kW","ref":"FTXF20F/RXF20F","url":"https://www.climshop.com/23-ftxf20e-rxf20e.html"},
             {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 2.5 kW","ref":"FTXF25F/RXF25F","url":"https://www.climshop.com/58-ftxf25e-rxf25e.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 3.5 kW","ref":"FTXF35F/RXF35F","url":"https://www.climshop.com/sensira-daikin-ftxf35a-rxf35a-xml-428_429_439_227_312_613-3773.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 3.5 kW","ref":"FTXF35F/RXF35F","url":"https://www.climshop.com/59-ftxf35e-rxf35e.html"},
             {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 5.0 kW","ref":"FTXF50F/RXF50D","url":"https://www.climshop.com/61-ftxf50e-rxf50e.html"},
             {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 7.1 kW","ref":"FTXF71F/RXF71D","url":"https://www.climshop.com/63-ftxf71e-rxf71e.html"},
             {"gamme":"Mural & Console","sous_gamme":"Comfora","nom":"Comfora 2.5 kW","ref":"FTXP25M/RXP25M","url":"https://www.climshop.com/ftxp25m-rxp25m-xml-428_429_439_227_312_614-3784.html"},
@@ -147,9 +147,20 @@ def scrape(url):
     try:
         r = requests.get(url, headers=HEADERS, timeout=15)
         soup = BeautifulSoup(r.text, "html.parser")
+        # Méthode 1 : itemprop="price" (Toshiba)
         tag = soup.find(itemprop="price")
         if tag:
             ttc = float(tag.get("content", "0"))
+            return {"ttc": ttc, "ht": round(ttc/1.2, 2), "ok": True}
+        # Méthode 2 : meta property="product:price:amount" (Daikin, autres)
+        meta = soup.find("meta", property="product:price:amount")
+        if meta:
+            ttc = float(meta.get("content", "0"))
+            return {"ttc": ttc, "ht": round(ttc/1.2, 2), "ok": True}
+        # Méthode 3 : meta name="product:price:amount"
+        meta2 = soup.find("meta", attrs={"name": "product:price:amount"})
+        if meta2:
+            ttc = float(meta2.get("content", "0"))
             return {"ttc": ttc, "ht": round(ttc/1.2, 2), "ok": True}
         return {"ttc": None, "ht": None, "ok": False}
     except:
