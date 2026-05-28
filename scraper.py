@@ -5,11 +5,22 @@ import json, os
 
 HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"}
 
+# Icônes SVG inline par marque (simples et propres)
+ICONES = {
+    "toshiba":    '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#2e86c1"/><text x="20" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">TOSH</text></svg>',
+    "daikin":     '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#0066cc"/><text x="20" y="26" text-anchor="middle" font-size="11" font-weight="bold" fill="white" font-family="Arial">DAIK</text></svg>',
+    "mitsubishi": '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#cc0000"/><text x="20" y="26" text-anchor="middle" font-size="10" font-weight="bold" fill="white" font-family="Arial">MITS</text></svg>',
+    "atlantic":   '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#006699"/><text x="20" y="26" text-anchor="middle" font-size="10" font-weight="bold" fill="white" font-family="Arial">ATL</text></svg>',
+    "lg":         '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#a50034"/><text x="20" y="26" text-anchor="middle" font-size="14" font-weight="bold" fill="white" font-family="Arial">LG</text></svg>',
+    "samsung":    '<svg viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#1428a0"/><text x="20" y="26" text-anchor="middle" font-size="9" font-weight="bold" fill="white" font-family="Arial">SAMS</text></svg>',
+}
+
 MARQUES = {
     "toshiba": {
-        "nom": "Toshiba", "emoji": "❄️", "couleur": "#2e86c1",
-        "desc": "Yukai · Shorai Edge · Haori",
+        "nom": "Toshiba", "couleur": "#2e86c1",
+        "desc": "Yukai · Shorai Edge · Haori · Multi-splits",
         "produits": [
+            # Mural & Console
             {"gamme":"Mural & Console","sous_gamme":"Yukai","nom":"Yukai 1.5 kW","ref":"RAS-B05E2KVG","url":"https://www.climshop.com/181-yukai-ras-b05e2kvg-ras-05e2avg.html"},
             {"gamme":"Mural & Console","sous_gamme":"Yukai","nom":"Yukai 2.0 kW","ref":"RAS-B07E2KVG","url":"https://www.climshop.com/182-yukai-ras-b07e2kvg-ras-07e2avg.html"},
             {"gamme":"Mural & Console","sous_gamme":"Yukai","nom":"Yukai 2.5 kW","ref":"RAS-B10E2KVG","url":"https://www.climshop.com/183-yukai-ras-b10e2kvg-ras-10e2avg.html"},
@@ -22,10 +33,26 @@ MARQUES = {
             {"gamme":"Mural & Console","sous_gamme":"Shorai Edge","nom":"Shorai Edge 5.0 kW","ref":"RAS-B18G3KVSG","url":"https://www.climshop.com/193-shorai-edge-ras-b18g3kvsg-ras-18j2avsg.html"},
             {"gamme":"Mural & Console","sous_gamme":"Haori","nom":"Haori 2.5 kW","ref":"RAS-B10N4KVRG","url":"https://www.climshop.com/196-haori-ras-b10n4kvrg-ras-10j2avsg.html"},
             {"gamme":"Mural & Console","sous_gamme":"Haori","nom":"Haori 4.6 kW","ref":"RAS-B16N4KVRG","url":"https://www.climshop.com/198-haori-ras-b16n4kvrg-ras-16j2avsg.html"},
+            # Multi-splits — Groupes extérieurs
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Bi-split 2.9 kW (RAS-2M10G3AVG-E)","ref":"RAS-2M10G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Bi-split 4.0 kW (RAS-2M14G3AVG-E)","ref":"RAS-2M14G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Bi-split 5.2 kW (RAS-2M18G3AVG-E)","ref":"RAS-2M18G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Tri-split 5.2 kW (RAS-3M18G3AVG-E)","ref":"RAS-3M18G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Tri-split 7.5 kW (RAS-3M26G3AVG-E)","ref":"RAS-3M26G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Quadri-split 8.0 kW (RAS-4M27G3AVG-E)","ref":"RAS-4M27G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Groupes extérieurs","nom":"Penta-split 10.0 kW (RAS-5M34G3AVG-E)","ref":"RAS-5M34G3AVG-E","url":"https://www.climshop.com/291-unites-ext-toshiba-ras.html"},
+            # Multi-splits — Unités intérieures
+            {"gamme":"Multi-splits","sous_gamme":"Unités intérieures Naka","nom":"Naka 1.5 kW (RAS-B05B2KVG-E)","ref":"RAS-B05B2KVG-E","url":"https://www.climshop.com/845-unites-interieures-naka-toshiba.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Unités intérieures Naka","nom":"Naka 2.0 kW (RAS-B07B2KVG-E)","ref":"RAS-B07B2KVG-E","url":"https://www.climshop.com/845-unites-interieures-naka-toshiba.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Unités intérieures Naka","nom":"Naka 2.5 kW (RAS-B10B2KVG-E)","ref":"RAS-B10B2KVG-E","url":"https://www.climshop.com/845-unites-interieures-naka-toshiba.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Unités intérieures Naka","nom":"Naka 3.3 kW (RAS-B13B2KVG-E)","ref":"RAS-B13B2KVG-E","url":"https://www.climshop.com/845-unites-interieures-naka-toshiba.html"},
+            {"gamme":"Multi-splits","sous_gamme":"Unités intérieures Naka","nom":"Naka 4.2 kW (RAS-B16B2KVG-E)","ref":"RAS-B16B2KVG-E","url":"https://www.climshop.com/845-unites-interieures-naka-toshiba.html"},
+            # Packs bi-split
+            {"gamme":"Multi-splits","sous_gamme":"Packs bi-split","nom":"Bi-split Yukai 1.5+3.3 kW","ref":"BISPLIT-YUKAI-05-13","url":"https://www.climshop.com/260-bisplit-ras2m18g3avge-rasb05e2kvge-rasb13e2kvge.html"},
         ]
     },
     "daikin": {
-        "nom": "Daikin", "emoji": "🌀", "couleur": "#0066cc",
+        "nom": "Daikin", "couleur": "#0066cc",
         "desc": "Sensira · Comfora · Perfera · Stylish",
         "produits": [
             {"gamme":"Mural & Console","sous_gamme":"Sensira","nom":"Sensira 2.0 kW","ref":"FTXF20F/RXF20F","url":"https://www.climshop.com/23-ftxf20e-rxf20e.html"},
@@ -46,36 +73,35 @@ MARQUES = {
         ]
     },
     "mitsubishi": {
-        "nom": "Mitsubishi Electric", "emoji": "⚡", "couleur": "#cc0000",
-        "desc": "HR Essentiel · AP Compact · EF Design · FT · LN",
+        "nom": "Mitsubishi Electric", "couleur": "#cc0000",
+        "desc": "HR Essentiel · AP Compact · EF Design · LN",
         "produits": [
             {"gamme":"Mural & Console","sous_gamme":"HR Essentiel","nom":"HR 2.5 kW","ref":"MSZ-HR25VFK/MUZ-HR25VF","url":"https://www.climshop.com/126-msz-hr25vf-muz-hr25vf.html"},
             {"gamme":"Mural & Console","sous_gamme":"HR Essentiel","nom":"HR 3.5 kW","ref":"MSZ-HR35VFK/MUZ-HR35VF","url":"https://www.climshop.com/msz-hr35vf-muz-hr35vf-xml-428_429_439_216_316_617-3802.html"},
             {"gamme":"Mural & Console","sous_gamme":"HR Essentiel","nom":"HR 5.0 kW","ref":"MSZ-HR50VFK/MUZ-HR50VF","url":"https://www.climshop.com/msz-hr50vf-muz-hr50vf-xml-428_429_439_216_316_617-3803.html"},
-            {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 1.5 kW","ref":"MSZ-AY15VGK","url":"https://www.climshop.com/258-unites-interieures-mitsubishi-mszap.html"},
             {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 2.5 kW","ref":"MSZ-AP25VGK/MUZ-AP25VG","url":"https://www.climshop.com/msz-ap25vgk-muz-ap25vg-xml-428_429_439_216_316_618-3808.html"},
             {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 3.5 kW","ref":"MSZ-AP35VGK/MUZ-AP35VG","url":"https://www.climshop.com/msz-ap35vgk-muz-ap35vg-xml-428_429_439_216_316_618-3809.html"},
             {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 5.0 kW","ref":"MSZ-AP50VGK/MUZ-AP50VG","url":"https://www.climshop.com/msz-ap50vgk-muz-ap50vg-xml-428_429_439_216_316_618-3810.html"},
             {"gamme":"Mural & Console","sous_gamme":"EF Design","nom":"EF 2.5 kW","ref":"MSZ-EF25VGKW/MUZ-EF25VG","url":"https://www.climshop.com/msz-ef25vgkw-muz-ef25vg-xml-428_429_439_216_316_619-3816.html"},
             {"gamme":"Mural & Console","sous_gamme":"EF Design","nom":"EF 3.5 kW","ref":"MSZ-EF35VGKW/MUZ-EF35VG","url":"https://www.climshop.com/msz-ef35vgkw-muz-ef35vg-xml-428_429_439_216_316_619-3817.html"},
-            {"gamme":"Mural & Console","sous_gamme":"LN Design De Luxe","nom":"LN 2.5 kW blanc","ref":"MSZ-LN25VG2W/MUZ-LN25VG2","url":"https://www.climshop.com/msz-ln25vg2w-muz-ln25vg2-xml-428_429_439_216_316_621-3828.html"},
-            {"gamme":"Mural & Console","sous_gamme":"LN Design De Luxe","nom":"LN 3.5 kW blanc","ref":"MSZ-LN35VG2W/MUZ-LN35VG2","url":"https://www.climshop.com/msz-ln35vg2w-muz-ln35vg2-xml-428_429_439_216_316_621-3829.html"},
+            {"gamme":"Mural & Console","sous_gamme":"LN Design De Luxe","nom":"LN 2.5 kW","ref":"MSZ-LN25VG2W/MUZ-LN25VG2","url":"https://www.climshop.com/msz-ln25vg2w-muz-ln25vg2-xml-428_429_439_216_316_621-3828.html"},
+            {"gamme":"Mural & Console","sous_gamme":"LN Design De Luxe","nom":"LN 3.5 kW","ref":"MSZ-LN35VG2W/MUZ-LN35VG2","url":"https://www.climshop.com/msz-ln35vg2w-muz-ln35vg2-xml-428_429_439_216_316_621-3829.html"},
         ]
     },
     "atlantic": {
-        "nom": "Atlantic Fujitsu", "emoji": "🌊", "couleur": "#006699",
+        "nom": "Atlantic Fujitsu", "couleur": "#006699",
         "desc": "Takao Plus · Takao M1 · Takao M2",
         "produits": [
-            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 2.0 kW","ref":"ASYH7KJCA.UI/AOYH7KJCA.UE","url":"https://www.climshop.com/218-takao-plus-2kw.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 2.5 kW","ref":"ASYH9KJCA.UI/AOYH9KJCA.UE","url":"https://www.climshop.com/219-takao-plus-2-5kw.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 3.4 kW","ref":"ASYH12KJCA.UI/AOYH12KJCA.UE","url":"https://www.climshop.com/220-takao-plus-3-4kw.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 4.2 kW","ref":"ASYH14KJCA.UI/AOYH14KJCA.UE","url":"https://www.climshop.com/221-takao-plus-4-2kw.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 3.4 kW","ref":"ASYG12KPC.UI/AOYG12KPC.UE","url":"https://www.climshop.com/asyg12kpcui-aoyg12kpcue-takaom1-xml-428_429_439_255_314_629-3938.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 5.2 kW","ref":"ASYG18KLC.UI/AOYG18KLC.UE","url":"https://www.climshop.com/asyg18klcui-aoyg18klcue-takaom1-xml-428_429_439_255_314_629-3940.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 2.0 kW","ref":"ASYH7KJCA/AOYH7KJCA","url":"https://www.climshop.com/218-takao-plus-2kw.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 2.5 kW","ref":"ASYH9KJCA/AOYH9KJCA","url":"https://www.climshop.com/219-takao-plus-2-5kw.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 3.4 kW","ref":"ASYH12KJCA/AOYH12KJCA","url":"https://www.climshop.com/220-takao-plus-3-4kw.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 4.2 kW","ref":"ASYH14KJCA/AOYH14KJCA","url":"https://www.climshop.com/221-takao-plus-4-2kw.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 3.4 kW","ref":"ASYG12KPC/AOYG12KPC","url":"https://www.climshop.com/asyg12kpcui-aoyg12kpcue-takaom1-xml-428_429_439_255_314_629-3938.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 5.2 kW","ref":"ASYG18KLC/AOYG18KLC","url":"https://www.climshop.com/asyg18klcui-aoyg18klcue-takaom1-xml-428_429_439_255_314_629-3940.html"},
         ]
     },
     "lg": {
-        "nom": "LG", "emoji": "🔵", "couleur": "#a50034",
+        "nom": "LG", "couleur": "#a50034",
         "desc": "Standard Wifi · Dualcool Premium · Artcool Gallery",
         "produits": [
             {"gamme":"Mural & Console","sous_gamme":"Standard Wifi","nom":"Standard 2.5 kW","ref":"S09ET.NSJ/S09ET.UA3","url":"https://www.climshop.com/standard-wifi-s09et-nsj-ua3-xml-428_429_439_263_330_643-3997.html"},
@@ -89,21 +115,21 @@ MARQUES = {
         ]
     },
     "samsung": {
-        "nom": "Samsung", "emoji": "📱", "couleur": "#1428a0",
+        "nom": "Samsung", "couleur": "#1428a0",
         "desc": "AR35 Wifi · CEBU S2 · WindFree Comfort S2",
         "produits": [
-            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 2.0 kW","ref":"AR07TXHQASINEU/AR07TXHQASIXEU","url":"https://www.climshop.com/903-ar35-wifi-samsung-2000w.html"},
-            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 2.5 kW","ref":"AR09TXHQASINEU/AR09TXHQASIXEU","url":"https://www.climshop.com/ar35-wifi-samsung-2500w-xml-428_429_439_289_360_685-4043.html"},
-            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 3.5 kW","ref":"AR12TXHQASINEU/AR12TXHQASIXEU","url":"https://www.climshop.com/904-ar35-wifi-samsung-3500w.html"},
-            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 7.0 kW","ref":"AR24TXHQASINEU/AR24TXHQASIXEU","url":"https://www.climshop.com/906-ar35-wifi-samsung-7200w.html"},
-            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 2.0 kW","ref":"AR07BXEAAWKNEU/AR07BXEAAWKXEU","url":"https://www.climshop.com/cebu-s2-2000w-xml-428_429_439_289_360_686-4045.html"},
-            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 2.5 kW","ref":"AR09BXEAAWKNEU/AR09BXEAAWKXEU","url":"https://www.climshop.com/cebu-s2-2500w-xml-428_429_439_289_360_686-4046.html"},
-            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 3.5 kW","ref":"AR12BXEAAWKNEU/AR12BXEAAWKXEU","url":"https://www.climshop.com/cebu-s2-3500w-xml-428_429_439_289_360_686-4047.html"},
-            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 5.0 kW","ref":"AR18BXEAAWKNEU/AR18BXEAAWKXEU","url":"https://www.climshop.com/cebu-s2-5000w-xml-428_429_439_289_360_686-4048.html"},
-            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 2.5 kW","ref":"AR09BXCAAWKNEU/AR09BXCAAWKXEU","url":"https://www.climshop.com/windfree-comfort-s2-2500w-xml-428_429_439_289_360_687-4050.html"},
-            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 3.5 kW","ref":"AR12BXCAAWKNEU/AR12BXCAAWKXEU","url":"https://www.climshop.com/windfree-comfort-s2-3500w-xml-428_429_439_289_360_687-4051.html"},
-            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 5.0 kW","ref":"AR18BXCAAWKNEU/AR18BXCAAWKXEU","url":"https://www.climshop.com/windfree-comfort-s2-5000w-xml-428_429_439_289_360_687-4052.html"},
-            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 7.0 kW","ref":"AR24BXCAAWKNEU/AR24BXCAAWKXEU","url":"https://www.climshop.com/windfree-comfort-s2-7000w-xml-428_429_439_289_360_687-4053.html"},
+            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 2.0 kW","ref":"AR07TXHQASINEU","url":"https://www.climshop.com/903-ar35-wifi-samsung-2000w.html"},
+            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 2.5 kW","ref":"AR09TXHQASINEU","url":"https://www.climshop.com/ar35-wifi-samsung-2500w-xml-428_429_439_289_360_685-4043.html"},
+            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 3.5 kW","ref":"AR12TXHQASINEU","url":"https://www.climshop.com/904-ar35-wifi-samsung-3500w.html"},
+            {"gamme":"Mural & Console","sous_gamme":"AR35 Wifi","nom":"AR35 7.0 kW","ref":"AR24TXHQASINEU","url":"https://www.climshop.com/906-ar35-wifi-samsung-7200w.html"},
+            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 2.0 kW","ref":"AR07BXEAAWKNEU","url":"https://www.climshop.com/cebu-s2-2000w-xml-428_429_439_289_360_686-4045.html"},
+            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 2.5 kW","ref":"AR09BXEAAWKNEU","url":"https://www.climshop.com/cebu-s2-2500w-xml-428_429_439_289_360_686-4046.html"},
+            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 3.5 kW","ref":"AR12BXEAAWKNEU","url":"https://www.climshop.com/cebu-s2-3500w-xml-428_429_439_289_360_686-4047.html"},
+            {"gamme":"Mural & Console","sous_gamme":"CEBU S2","nom":"CEBU S2 5.0 kW","ref":"AR18BXEAAWKNEU","url":"https://www.climshop.com/cebu-s2-5000w-xml-428_429_439_289_360_686-4048.html"},
+            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 2.5 kW","ref":"AR09BXCAAWKNEU","url":"https://www.climshop.com/windfree-comfort-s2-2500w-xml-428_429_439_289_360_687-4050.html"},
+            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 3.5 kW","ref":"AR12BXCAAWKNEU","url":"https://www.climshop.com/windfree-comfort-s2-3500w-xml-428_429_439_289_360_687-4051.html"},
+            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 5.0 kW","ref":"AR18BXCAAWKNEU","url":"https://www.climshop.com/windfree-comfort-s2-5000w-xml-428_429_439_289_360_687-4052.html"},
+            {"gamme":"Mural & Console","sous_gamme":"WindFree Comfort S2","nom":"WindFree 7.0 kW","ref":"AR24BXCAAWKNEU","url":"https://www.climshop.com/windfree-comfort-s2-7000w-xml-428_429_439_289_360_687-4053.html"},
         ]
     }
 }
@@ -153,10 +179,11 @@ cards = ""
 for slug in MARQUES_ORDRE:
     m = MARQUES[slug]
     nb = len(m["produits"])
-    cards += f'<a href="{slug}/index.html" class="card"><div class="card-icon" style="background:{m["couleur"]}">{m["emoji"]}</div><div class="card-body"><div class="card-title">{m["nom"]}</div><div class="card-desc">{m["desc"]}</div><div class="card-nb">{nb} modèles</div></div><div class="card-arrow">→</div></a>'
+    icone = ICONES[slug]
+    cards += f'<a href="{slug}/index.html" class="card"><div class="card-icon">{icone}</div><div class="card-body"><div class="card-title">{m["nom"]}</div><div class="card-desc">{m["desc"]}</div><div class="card-nb">{nb} modèles</div></div><div class="card-arrow">→</div></a>'
 
 accueil = f"""<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tarifs Climatisation — 2D Energies</title>
-<style>*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d}}.header{{background:linear-gradient(135deg,#1a3a5c,#2e86c1);color:#fff;padding:22px 24px 18px}}.header h1{{font-size:20px;margin-bottom:3px}}.header p{{font-size:11px;opacity:.8}}.container{{max-width:700px;margin:24px auto;padding:0 14px}}.subtitle{{font-size:13px;color:#777;margin-bottom:18px}}.cards{{display:flex;flex-direction:column;gap:9px}}.card{{display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px;text-decoration:none;color:inherit;box-shadow:0 1px 5px rgba(0,0,0,.07);transition:.2s}}.card:hover{{box-shadow:0 3px 14px rgba(0,0,0,.12);transform:translateY(-1px)}}.card-icon{{width:44px;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}}.card-body{{flex:1}}.card-title{{font-size:15px;font-weight:700;margin-bottom:2px}}.card-desc{{font-size:11px;color:#999}}.card-nb{{font-size:10px;color:#bbb;margin-top:2px}}.card-arrow{{font-size:16px;color:#ccc}}.footer{{text-align:center;color:#bbb;font-size:10px;margin:20px 0}}</style></head><body>
+<style>*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d}}.header{{background:linear-gradient(135deg,#1a3a5c,#2e86c1);color:#fff;padding:22px 24px 18px}}.header h1{{font-size:20px;margin-bottom:3px}}.header p{{font-size:11px;opacity:.8}}.container{{max-width:700px;margin:24px auto;padding:0 14px}}.subtitle{{font-size:13px;color:#777;margin-bottom:18px}}.cards{{display:flex;flex-direction:column;gap:9px}}.card{{display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px;text-decoration:none;color:inherit;box-shadow:0 1px 5px rgba(0,0,0,.07);transition:.2s}}.card:hover{{box-shadow:0 3px 14px rgba(0,0,0,.12);transform:translateY(-1px)}}.card-icon{{width:44px;height:44px;flex-shrink:0}}.card-icon svg{{width:44px;height:44px}}.card-body{{flex:1}}.card-title{{font-size:15px;font-weight:700;margin-bottom:2px}}.card-desc{{font-size:11px;color:#999}}.card-nb{{font-size:10px;color:#bbb;margin-top:2px}}.card-arrow{{font-size:16px;color:#ccc}}.footer{{text-align:center;color:#bbb;font-size:10px;margin:20px 0}}</style></head><body>
 <div class="header"><h1>❄️ Tarifs Climatisation</h1><p>2D Energies · Mis à jour automatiquement chaque jour · Source : climshop.com</p></div>
 <div class="container"><p class="subtitle">Sélectionne une marque pour voir les tarifs et tes prix de vente</p><div class="cards">{cards}</div></div>
 <div class="footer">Mis à jour le {date_maj} · climshop.com</div></body></html>"""
@@ -169,7 +196,7 @@ print("✅ index.html (accueil)")
 for slug in MARQUES_ORDRE:
     marque = MARQUES[slug]
     os.makedirs(slug, exist_ok=True)
-    
+
     resultats = []
     for p in marque["produits"]:
         print(f"  {p['nom']}...", end=" ", flush=True)
@@ -179,15 +206,15 @@ for slug in MARQUES_ORDRE:
         if prix["ok"]:
             historique[p["ref"]] = prix["ttc"]
         print(fmt(prix["ttc"]) if prix["ok"] else "❌")
-    
+
     gammes = {}
     for r in resultats:
         gammes.setdefault(r["gamme"], {}).setdefault(r["sous_gamme"], []).append(r)
-    
+
     nav = '<a href="../index.html">← Accueil</a>' + "".join(
         f'<a href="../{s}/index.html" class="{"active" if s==slug else ""}">{MARQUES[s]["nom"]}</a>'
         for s in MARQUES_ORDRE)
-    
+
     tables = ""
     for gamme, sgs in gammes.items():
         tables += f"<h2>{gamme}</h2>"
@@ -197,13 +224,13 @@ for slug in MARQUES_ORDRE:
                 mp = fmt(mon_prix(r["ttc"])) if r["ok"] else "—"
                 tables += f"<tr><td><strong>{r['nom']}</strong><span class='ref'>{r['ref']}</span></td><td class='prix'>{fmt(r['ttc'])}</td><td class='ht'>{fmt(r['ht'])}</td><td>{evol_html(r['ref'],r['ttc'],r['ok'])}</td><td class='myprix'><span class='mon-prix'>{mp}</span></td><td><a class='lien' href='{r['url']}' target='_blank'>Voir →</a></td></tr>"
             tables += "</tbody></table>"
-    
+
     page = f"""<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tarifs {marque['nom']} — 2D Energies</title><style>{CSS}</style></head><body>
-<div class="header"><div><h1>{marque['emoji']} Tarifs {marque['nom']}</h1><p>Mis à jour automatiquement · {date_maj} · Source : climshop.com</p></div><span class="badge">Mon prix = Climshop −20% × +40% × +20%</span></div>
+<div class="header"><div><h1>❄️ Tarifs {marque['nom']}</h1><p>Mis à jour automatiquement · {date_maj} · Source : climshop.com</p></div><span class="badge">Mon prix = Climshop −20% × +40% × +20%</span></div>
 <nav class="nav">{nav}</nav>
 <div class="container"><div class="note">💡 <strong>Mon prix</strong> = prix Climshop × 0.80 × 1.40 × 1.20</div>{tables}</div>
 <div class="footer">Mis à jour automatiquement chaque jour via GitHub Actions · Source : climshop.com</div></body></html>"""
-    
+
     with open(f"{slug}/index.html", "w", encoding="utf-8") as f:
         f.write(page)
     print(f"✅ {slug}/index.html")
