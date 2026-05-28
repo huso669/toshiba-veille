@@ -64,7 +64,7 @@ MARQUES = {
             {"gamme":"Mural & Console","sous_gamme":"HR Essentiel","nom":"HR 5.0 kW","ref":"MSZ-HR50VFK","url":"https://www.climshop.com/130-msz-hr50vf-muz-hr50vf.html"},
             {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 2.5 kW","ref":"MSZ-AP25VGK","url":"https://www.climshop.com/1msz-ap25vgk-1muz-ap25vg-xml-428_429_439_216_318_619-3865.html"},
             {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 3.5 kW","ref":"MSZ-AP35VGK","url":"https://www.climshop.com/1msz-ap35vgk-1muz-ap35vg-xml-428_429_439_216_318_619-3864.html"},
-            {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 5.0 kW","ref":"MSZ-AP50VGK","url":"https://www.climshop.com/mszap50vgk-muzap50vg-xml-428_429_439_216_318_619-3863.html"},
+            {"gamme":"Mural & Console","sous_gamme":"AP Compact","nom":"AP 5.0 kW","ref":"MSZ-AP50VGK","url":"https://www.climshop.com/1msz-ap50vgk-1muz-ap50vg-xml-428_429_439_216_318_619-3866.html"},
             {"gamme":"Mural & Console","sous_gamme":"EF Design","nom":"EF 2.5 kW","ref":"MSZ-EF25VGKW","url":"https://www.climshop.com/142-msz-ef25vgkw-muz-ef25vg-blanc.html"},
             {"gamme":"Mural & Console","sous_gamme":"EF Design","nom":"EF 3.5 kW","ref":"MSZ-EF35VGKW","url":"https://www.climshop.com/145-msz-ef35vgkw-muz-ef35vg-blanc.html"},
             {"gamme":"Mural & Console","sous_gamme":"LN Design De Luxe","nom":"LN 2.5 kW","ref":"MSZ-LN25VG2W","url":"https://www.climshop.com/157-msz-ln25vg2w-muz-ln25vghz2-blanc.html"},
@@ -79,8 +79,8 @@ MARQUES = {
             {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 2.5 kW","ref":"ASYH9KJCA","url":"https://www.climshop.com/219-takao-plus-2-5kw.html"},
             {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 3.4 kW","ref":"ASYH12KJCA","url":"https://www.climshop.com/220-takao-plus-3-4kw.html"},
             {"gamme":"Mural & Console","sous_gamme":"Takao Plus","nom":"Takao Plus 4.2 kW","ref":"ASYH14KJCA","url":"https://www.climshop.com/221-takao-plus-4-2kw.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 3.4 kW","ref":"ASYG12KPC","url":"https://www.climshop.com/216-takao-m1-asyg12-kpcui-ayog12kpcue.html"},
-            {"gamme":"Mural & Console","sous_gamme":"Takao M1","nom":"Takao M1 5.2 kW","ref":"ASYG18KLC","url":"https://www.climshop.com/217-takao-m1-asyg18-kpcui-ayog18kpcue.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao M2","nom":"Takao M2 3.4 kW","ref":"ASYG12KMCC","url":"https://www.climshop.com/220-takao-m2-asyg12-kmccui-ayog.html"},
+            {"gamme":"Mural & Console","sous_gamme":"Takao M2","nom":"Takao M2 5.2 kW","ref":"ASYG18KMCC","url":"https://www.climshop.com/takaom2-fujitsu-atlantic-xsl-428_429_439_255_314_630.html"},
         ]
     },
     "lg": {
