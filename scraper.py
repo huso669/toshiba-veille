@@ -282,7 +282,7 @@ for slug in MARQUES_ORDRE:
                 tables += f"<tr><td><strong>{r['nom']}</strong><span class='ref'>{r['ref']}</span></td><td class='prix'>{fmt(r['ttc'])}</td><td class='ht'>{fmt(r['ht'])}</td><td>{evol_html(r['ref'],r['ttc'],r['ok'])}</td><td class='myprix'><span class='mon-prix'>{mp}</span></td><td><a class='lien' href='{r['url']}' target='_blank'>Voir →</a></td></tr>"
             tables += "</tbody></table>"
 
-    page = f"""<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tarifs {marque['nom']} — 2D Energies</title><style>{CSS}</style></head><body>
+    page = f"""<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tarifs {marque['nom']} — 2D Energies</title><style>{CSS}</style><script>if(window.navigator.standalone===true&&!document.referrer){{window.location.replace("../index.html");}}</script></head><body>
 <div class="header"><div><h1>❄️ Tarifs {marque['nom']}</h1><p>Mis à jour automatiquement · {date_maj} · Source : climshop.com</p></div><span class="badge">Mon prix = Climshop −20% × +40% × +20%</span></div>
 <nav class="nav">{nav}</nav>
 <div class="container"><div class="note">💡 <strong>Mon prix</strong> = prix Climshop × 0.80 × 1.40 × 1.20</div>{tables}</div>
