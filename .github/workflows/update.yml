@@ -1,4 +1,4 @@
-pbcopy << 'EOF'
+
 name: Mise à jour prix climatisation
 
 on:
@@ -23,4 +23,4 @@ jobs:
           git add -A
           git diff --staged --quiet || git commit -m "Prix mis à jour automatiquement"
           git push
-EOF
+
