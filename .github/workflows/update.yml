@@ -1,30 +1,21 @@
-name: Mise à jour prix Toshiba
+name: Mise à jour prix climatisation
 
 on:
   schedule:
-    - cron: '0 7 * * *'   # tous les jours à 7h du matin (UTC)
-  workflow_dispatch:        # bouton pour lancer manuellement depuis GitHub
+    - cron: '0 7 * * *'
+  workflow_dispatch:
 
 jobs:
   scrape:
     runs-on: ubuntu-latest
     steps:
-      - name: Récupérer le code
-        uses: actions/checkout@v4
-
-      - name: Installer Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Installer les dépendances
-        run: pip install requests beautifulsoup4
-
-      - name: Lancer le scraper
-        run: python scraper.py
-
-      - name: Sauvegarder et publier
-        uses: stefanzweifel/git-auto-commit-action@v5
+      - run: pip install requests beautifulsoup4
+      - run: python scraper.py
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Prix mis à jour automatiquement"
-          file_pattern: "index.html historique.json"
+          file_pattern: "index.html toshiba/index.html daikin/index.html mitsubishi/index.html atlantic/index.html lg/index.html samsung/index.html historique.json"
