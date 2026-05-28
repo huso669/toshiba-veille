@@ -1,3 +1,4 @@
+pbcopy << 'EOF'
 name: Mise à jour prix climatisation
 
 on:
@@ -15,7 +16,11 @@ jobs:
           python-version: '3.11'
       - run: pip install requests beautifulsoup4
       - run: python scraper.py
-      - uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Prix mis à jour automatiquement"
-          file_pattern: "index.html toshiba/index.html daikin/index.html mitsubishi/index.html atlantic/index.html lg/index.html samsung/index.html historique.json"
+      - name: Commit et push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Prix mis à jour automatiquement"
+          git push
+EOF
