@@ -245,7 +245,7 @@ accueil = f"""<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta n
 <style>*{{box-sizing:border-box;margin:0;padding:0}}body{{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d}}.header{{background:linear-gradient(135deg,#5a9a32,#7bc143);color:#fff;padding:22px 24px 18px}}.header h1{{font-size:20px;margin-bottom:3px}}.header p{{font-size:11px;opacity:.8}}.container{{max-width:700px;margin:24px auto;padding:0 14px}}.subtitle{{font-size:13px;color:#777;margin-bottom:18px}}.cards{{display:flex;flex-direction:column;gap:9px}}.card{{display:flex;align-items:center;gap:12px;background:#fff;border-radius:10px;padding:14px;text-decoration:none;color:inherit;box-shadow:0 1px 5px rgba(0,0,0,.07);transition:.2s}}.card:hover{{box-shadow:0 3px 14px rgba(0,0,0,.12);transform:translateY(-1px)}}.card-icon{{width:44px;height:44px;flex-shrink:0}}.card-icon svg{{width:44px;height:44px}}.card-body{{flex:1}}.card-title{{font-size:15px;font-weight:700;margin-bottom:2px}}.card-desc{{font-size:11px;color:#999}}.card-nb{{font-size:10px;color:#bbb;margin-top:2px}}.card-arrow{{font-size:16px;color:#ccc}}.footer{{text-align:center;color:#bbb;font-size:10px;margin:20px 0}}</style></head><body>
 <div class="header"><h1>❄️ Tarifs Climatisation</h1><p>2D Energies · Mis à jour automatiquement chaque jour · Source : climshop.com</p></div>
 <div class="container"><p class="subtitle">Sélectionne une marque pour voir les tarifs et tes prix de vente</p><div class="cards">{cards}</div></div>
-<div class="footer">Mis à jour le {date_maj} · climshop.com</div></body></html>"""
+<a href="vocal.html" class="card vocal-card"><div class="card-icon" style="background:#e74c3c;width:44px;height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px">🎙️</div><div class="card-body"><div class="card-title">Recherche vocale</div><div class="card-desc">Parle pour trouver un prix</div></div><div class="card-arrow">→</div></a></div></div><div class="footer">Mis à jour le {date_maj} · climshop.com</div></body></html>"""
 
 with open("index.html", "w", encoding="utf-8") as f:
     f.write(accueil)
@@ -294,4 +294,198 @@ for slug in MARQUES_ORDRE:
 
 with open(hist_file, "w") as f:
     json.dump(historique, f)
+
+# Générer la page recherche vocale avec toutes les données
+all_produits = []
+for slug in MARQUES_ORDRE:
+    for p in MARQUES[slug]["produits"]:
+        prix = prix_cache.get(p["url"], {"ttc": None, "ht": None, "ok": False})
+        if prix["ok"]:
+            all_produits.append({
+                "marque": MARQUES[slug]["nom"],
+                "nom": p["nom"],
+                "ref": p["ref"],
+                "sous_gamme": p["sous_gamme"],
+                "ttc": prix["ttc"],
+                "mon_prix": mon_prix(prix["ttc"]),
+                "url": p["url"]
+            })
+
+import json as _json
+data_js = _json.dumps(all_produits, ensure_ascii=False)
+
+vocal_page = f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Recherche vocale — 2D Energies</title>
+<style>
+*{{box-sizing:border-box;margin:0;padding:0}}
+body{{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d;min-height:100vh}}
+.header{{background:linear-gradient(135deg,#5a9a32,#7bc143);color:#fff;padding:16px 20px}}
+.header h1{{font-size:18px;margin-bottom:2px}}
+.header p{{font-size:11px;opacity:.8}}
+.nav{{background:#fff;border-bottom:2px solid #e0e6ed;padding:0 16px;display:flex;gap:0;overflow-x:auto}}
+.nav a{{display:inline-block;padding:10px 12px;font-size:12px;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}}
+.nav a:hover,.nav a.active{{color:#7bc143;border-bottom-color:#7bc143}}
+.container{{max-width:600px;margin:20px auto;padding:0 16px}}
+.mic-zone{{text-align:center;padding:30px 0 20px}}
+.mic-btn{{width:90px;height:90px;border-radius:50%;background:#7bc143;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:.2s;box-shadow:0 4px 15px rgba(123,193,67,.4)}}
+.mic-btn:active{{transform:scale(.93)}}
+.mic-btn.listening{{background:#e74c3c;animation:pulse 1s infinite}}
+@keyframes pulse{{0%,100%{{box-shadow:0 4px 15px rgba(231,76,60,.4)}}50%{{box-shadow:0 4px 30px rgba(231,76,60,.7)}}}}
+.mic-icon{{width:36px;height:36px;fill:white}}
+.status{{font-size:14px;color:#888;min-height:20px}}
+.transcript{{background:#fff;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;color:#1a2c3d;min-height:40px;border:1px solid #e0e6ed;text-align:center;font-style:italic;color:#aaa}}
+.transcript.active{{color:#1a2c3d;font-style:normal}}
+.results{{margin-top:8px}}
+.result-card{{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 5px rgba(0,0,0,.07)}}
+.result-marque{{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}}
+.result-nom{{font-size:16px;font-weight:700;color:#1a2c3d;margin-bottom:8px}}
+.result-prix{{display:flex;gap:10px;flex-wrap:wrap}}
+.prix-block{{flex:1;min-width:120px;background:#f7fafd;border-radius:8px;padding:8px 12px;text-align:center}}
+.prix-label{{font-size:10px;color:#aaa;margin-bottom:2px}}
+.prix-val{{font-size:18px;font-weight:700;color:#1a2c3d}}
+.prix-block.mon-prix{{background:#eaf4e8}}
+.prix-block.mon-prix .prix-val{{color:#1e8449}}
+.no-result{{text-align:center;color:#aaa;font-size:14px;padding:20px}}
+.hint{{text-align:center;font-size:12px;color:#bbb;margin-top:8px}}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎙️ Recherche vocale</h1>
+  <p>2D Energies · Parle pour trouver un prix</p>
+</div>
+<nav class="nav">
+  <a href="index.html">← Accueil</a>
+  <a href="toshiba/index.html">Toshiba</a>
+  <a href="daikin/index.html">Daikin</a>
+  <a href="mitsubishi/index.html">Mitsubishi</a>
+  <a href="atlantic/index.html">Atlantic</a>
+  <a href="lg/index.html">LG</a>
+  <a href="samsung/index.html">Samsung</a>
+</nav>
+<div class="container">
+  <div class="mic-zone">
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()">
+      <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+    </button>
+    <div class="status" id="status">Appuie sur le micro pour parler</div>
+  </div>
+  <div class="transcript" id="transcript">Ex: "Toshiba Shorai Edge 2.5" ou "Daikin Sensira 3.5"</div>
+  <div class="hint">Dis la marque, la gamme et la puissance</div>
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+const PRODUITS = {data_js};
+
+function fmt(v) {{
+  return new Intl.NumberFormat('fr-FR', {{style:'currency',currency:'EUR'}}).format(v);
+}}
+
+function search(query) {{
+  const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const words = q.split(/\s+/).filter(w => w.length > 1);
+  
+  return PRODUITS.map(p => {{
+    const text = (p.marque + " " + p.nom + " " + p.sous_gamme + " " + p.ref)
+      .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    let score = 0;
+    words.forEach(w => {{ if(text.includes(w)) score++; }});
+    return {{...p, score}};
+  }})
+  .filter(p => p.score > 0)
+  .sort((a,b) => b.score - a.score)
+  .slice(0, 5);
+}}
+
+function showResults(results, query) {{
+  const div = document.getElementById('results');
+  if (!results.length) {{
+    div.innerHTML = '<div class="no-result">Aucun résultat pour "' + query + '"<br><small>Essaie avec la marque et la puissance</small></div>';
+    return;
+  }}
+  div.innerHTML = results.map(p => `
+    <div class="result-card">
+      <div class="result-marque">${{p.marque}} · ${{p.sous_gamme}}</div>
+      <div class="result-nom">${{p.nom}}</div>
+      <div class="result-prix">
+        <div class="prix-block">
+          <div class="prix-label">Prix Climshop TTC</div>
+          <div class="prix-val">${{fmt(p.ttc)}}</div>
+        </div>
+        <div class="prix-block mon-prix">
+          <div class="prix-label">Mon prix</div>
+          <div class="prix-val">${{fmt(p.mon_prix)}}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}}
+
+let recognition = null;
+let listening = false;
+
+function toggleMic() {{
+  if (listening) {{
+    recognition && recognition.stop();
+    return;
+  }}
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {{
+    document.getElementById('status').textContent = '⚠️ Reconnaissance vocale non supportée';
+    return;
+  }}
+  
+  recognition = new SpeechRecognition();
+  recognition.lang = 'fr-FR';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  
+  recognition.onstart = () => {{
+    listening = true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('status').textContent = '🔴 Écoute en cours...';
+    document.getElementById('transcript').className = 'transcript';
+    document.getElementById('transcript').textContent = '...';
+    document.getElementById('results').innerHTML = '';
+  }};
+  
+  recognition.onresult = (e) => {{
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    const t = document.getElementById('transcript');
+    t.className = 'transcript active';
+    t.textContent = transcript;
+    if (e.results[e.results.length-1].isFinal) {{
+      const results = search(transcript);
+      showResults(results, transcript);
+    }}
+  }};
+  
+  recognition.onend = () => {{
+    listening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('status').textContent = 'Appuie sur le micro pour parler';
+  }};
+  
+  recognition.onerror = (e) => {{
+    listening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('status').textContent = '⚠️ Erreur: ' + e.error;
+  }};
+  
+  recognition.start();
+}}
+</script>
+</body>
+</html>"""
+
+with open("vocal.html", "w", encoding="utf-8") as f:
+    f.write(vocal_page)
+print("✅ vocal.html")
+
 print(f"\n✅ Terminé — {date_maj}")
