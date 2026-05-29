@@ -386,18 +386,98 @@ function fmt(v) {{
   return new Intl.NumberFormat('fr-FR', {{style:'currency',currency:'EUR'}}).format(v);
 }}
 
+// Dictionnaire phonétique français -> termes techniques
+const PHONETIQUE = {{
+  // Marques
+  "toshiba": "toshiba", "tochiba": "toshiba", "tosiba": "toshiba",
+  "daikin": "daikin", "daïkin": "daikin", "dakin": "daikin", "daykin": "daikin",
+  "mitsubishi": "mitsubishi", "mitsubich": "mitsubishi", "mitsubich": "mitsubishi", "mitsou": "mitsubishi",
+  "samsung": "samsung", "samsong": "samsung",
+  "atlantic": "atlantic", "atlantique": "atlantic",
+  "fujitsu": "fujitsu", "foudjitsu": "fujitsu",
+  // Gammes Toshiba
+  "yukai": "yukai", "youkai": "yukai", "yukay": "yukai",
+  "shorai": "shorai", "choré": "shorai", "chauré": "shorai", "shore": "shorai", "shoré": "shorai", "shoreille": "shorai",
+  "haori": "haori", "aori": "haori", "haury": "haori",
+  "naka": "naka",
+  // Gammes Daikin
+  "sensira": "sensira", "censira": "sensira", "sansira": "sensira",
+  "comfora": "comfora", "confort": "comfora", "confora": "comfora",
+  "perfera": "perfera", "perphera": "perfera", "parfaira": "perfera",
+  "stylish": "stylish", "stylique": "stylish",
+  // Gammes Mitsubishi
+  "essentiel": "hr", "essential": "hr",
+  "compact": "ap",
+  "design": "ef ln",
+  // Gammes Atlantic
+  "takao": "takao", "tacot": "takao", "tacao": "takao",
+  // Gammes LG
+  "dualcool": "dualcool", "dual cool": "dualcool", "dual": "dualcool",
+  "artcool": "artcool", "art cool": "artcool",
+  "standard": "standard",
+  // Gammes Samsung
+  "cebu": "cebu", "sébu": "cebu", "cébou": "cebu",
+  "windfree": "windfree", "wind free": "windfree", "vanfri": "windfree", "winfree": "windfree",
+  // Puissances
+  "un virgule cinq": "1.5", "1 virgule 5": "1.5",
+  "deux": "2", "deux kw": "2 kw", "deux kilowatt": "2 kw",
+  "deux virgule cinq": "2.5", "2 virgule 5": "2.5", "deux et demi": "2.5",
+  "trois": "3", "trois kw": "3 kw",
+  "trois virgule cinq": "3.5", "3 virgule 5": "3.5", "trois et demi": "3.5",
+  "quatre": "4", "quatre kw": "4 kw",
+  "quatre virgule deux": "4.2", "4 virgule 2": "4.2",
+  "cinq": "5", "cinq kw": "5 kw", "cinq kilowatt": "5 kw",
+  "sept": "7", "sept kw": "7 kw",
+  "sept virgule un": "7.1", "7 virgule 1": "7.1",
+}};
+
+function normalise(text) {{
+  let t = text.toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s.,]/g, " ")
+    .trim();
+  // Appliquer le dictionnaire phonétique
+  for (const [phoneme, correct] of Object.entries(PHONETIQUE)) {{
+    t = t.replace(new RegExp(phoneme, 'gi'), correct);
+  }}
+  return t;
+}}
+
+function fuzzyMatch(a, b) {{
+  // Distance de Levenshtein simplifiée
+  if (a === b) return 1;
+  if (a.includes(b) || b.includes(a)) return 0.9;
+  let matches = 0;
+  const shorter = a.length < b.length ? a : b;
+  const longer = a.length < b.length ? b : a;
+  for (let i = 0; i < shorter.length; i++) {{
+    if (longer.includes(shorter[i])) matches++;
+  }}
+  return matches / longer.length;
+}}
+
 function search(query) {{
-  const q = query.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  const q = normalise(query);
   const words = q.split(/\s+/).filter(w => w.length > 1);
   
   return PRODUITS.map(p => {{
-    const text = (p.marque + " " + p.nom + " " + p.sous_gamme + " " + p.ref)
-      .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    const text = normalise(p.marque + " " + p.nom + " " + p.sous_gamme + " " + p.ref);
+    const textWords = text.split(/\s+/);
     let score = 0;
-    words.forEach(w => {{ if(text.includes(w)) score++; }});
+    
+    words.forEach(w => {{
+      if (text.includes(w)) {{
+        score += 2; // Match exact
+      }} else {{
+        // Match flou
+        const bestMatch = Math.max(...textWords.map(tw => fuzzyMatch(w, tw)));
+        if (bestMatch > 0.7) score += bestMatch;
+      }}
+    }});
+    
     return {{...p, score}};
   }})
-  .filter(p => p.score > 0)
+  .filter(p => p.score > 0.5)
   .sort((a,b) => b.score - a.score)
   .slice(0, 5);
 }}
