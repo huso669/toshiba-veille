@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Recherche vocale — 2D Energies</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f0f4f8;color:#1a2c3d;min-height:100vh}
+.header{background:linear-gradient(135deg,#5a9a32,#7bc143);color:#fff;padding:16px 20px}
+.header h1{font-size:18px;margin-bottom:2px}
+.header p{font-size:11px;opacity:.8}
+.nav{background:#fff;border-bottom:2px solid #e0e6ed;padding:0 16px;display:flex;gap:0;overflow-x:auto}
+.nav a{display:inline-block;padding:10px 12px;font-size:12px;color:#555;text-decoration:none;border-bottom:3px solid transparent;white-space:nowrap}
+.nav a:hover,.nav a.active{color:#7bc143;border-bottom-color:#7bc143}
+.container{max-width:600px;margin:20px auto;padding:0 16px}
+.mic-zone{text-align:center;padding:30px 0 20px}
+.mic-btn{width:90px;height:90px;border-radius:50%;background:#7bc143;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;transition:.2s;box-shadow:0 4px 15px rgba(123,193,67,.4)}
+.mic-btn:active{transform:scale(.93)}
+.mic-btn.listening{background:#e74c3c;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 4px 15px rgba(231,76,60,.4)}50%{box-shadow:0 4px 30px rgba(231,76,60,.7)}}
+.mic-icon{width:36px;height:36px;fill:white}
+.status{font-size:14px;color:#888;min-height:20px}
+.transcript{background:#fff;border-radius:10px;padding:12px 16px;margin:12px 0;font-size:14px;color:#1a2c3d;min-height:40px;border:1px solid #e0e6ed;text-align:center;font-style:italic;color:#aaa}
+.transcript.active{color:#1a2c3d;font-style:normal}
+.results{margin-top:8px}
+.result-card{background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 5px rgba(0,0,0,.07)}
+.result-marque{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.result-nom{font-size:16px;font-weight:700;color:#1a2c3d;margin-bottom:8px}
+.result-prix{display:flex;gap:10px;flex-wrap:wrap}
+.prix-block{flex:1;min-width:120px;background:#f7fafd;border-radius:8px;padding:8px 12px;text-align:center}
+.prix-label{font-size:10px;color:#aaa;margin-bottom:2px}
+.prix-val{font-size:18px;font-weight:700;color:#1a2c3d}
+.prix-block.mon-prix{background:#eaf4e8}
+.prix-block.mon-prix .prix-val{color:#1e8449}
+.no-result{text-align:center;color:#aaa;font-size:14px;padding:20px}
+.hint{text-align:center;font-size:12px;color:#bbb;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎙️ Recherche vocale</h1>
+  <p>2D Energies · Parle pour trouver un prix</p>
+</div>
+<nav class="nav">
+  <a href="index.html">← Accueil</a>
+  <a href="toshiba/index.html">Toshiba</a>
+  <a href="daikin/index.html">Daikin</a>
+  <a href="mitsubishi/index.html">Mitsubishi</a>
+  <a href="atlantic/index.html">Atlantic</a>
+  <a href="lg/index.html">LG</a>
+  <a href="samsung/index.html">Samsung</a>
+</nav>
+<div class="container">
+  <div class="mic-zone">
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()">
+      <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+    </button>
+    <div class="status" id="status">Appuie sur le micro pour parler</div>
+  </div>
+  <div class="transcript" id="transcript">Ex: "Toshiba Shorai Edge 2.5" ou "Daikin Sensira 3.5"</div>
+  <div class="hint">Dis la marque, la gamme et la puissance</div>
+  <div class="results" id="results"></div>
+</div>
+
+<script>
+const PRODUITS = [{"marque": "Toshiba", "nom": "Yukai 1.5 kW", "ref": "RAS-B05E2KVG", "sous_gamme": "Yukai", "ttc": 591.0, "mon_prix": 794.3, "url": "https://www.climshop.com/181-yukai-ras-b05e2kvg-ras-05e2avg.html"}, {"marque": "Toshiba", "nom": "Yukai 2.0 kW", "ref": "RAS-B07E2KVG", "sous_gamme": "Yukai", "ttc": 594.0, "mon_prix": 798.34, "url": "https://www.climshop.com/182-yukai-ras-b07e2kvg-ras-07e2avg.html"}, {"marque": "Toshiba", "nom": "Yukai 2.5 kW", "ref": "RAS-B10E2KVG", "sous_gamme": "Yukai", "ttc": 637.0, "mon_prix": 856.13, "url": "https://www.climshop.com/183-yukai-ras-b10e2kvg-ras-10e2avg.html"}, {"marque": "Toshiba", "nom": "Yukai 3.3 kW", "ref": "RAS-B13E2KVG", "sous_gamme": "Yukai", "ttc": 832.0, "mon_prix": 1118.21, "url": "https://www.climshop.com/184-yukai-ras-b13e2kvg-ras-13e2avg.html"}, {"marque": "Toshiba", "nom": "Yukai 4.2 kW", "ref": "RAS-B16E2KVG", "sous_gamme": "Yukai", "ttc": 1057.0, "mon_prix": 1420.61, "url": "https://www.climshop.com/185-yukai-ras-b16e2kvg-ras-16e2avg.html"}, {"marque": "Toshiba", "nom": "Shorai Edge 2.0 kW", "ref": "RAS-B07G3KVSG", "sous_gamme": "Shorai Edge", "ttc": 849.0, "mon_prix": 1141.06, "url": "https://www.climshop.com/189-shorai-edge-ras-b07g3kvsg-ras-07j2avsg.html"}, {"marque": "Toshiba", "nom": "Shorai Edge 2.5 kW", "ref": "RAS-B10G3KVSG", "sous_gamme": "Shorai Edge", "ttc": 961.0, "mon_prix": 1291.58, "url": "https://www.climshop.com/190-shorai-edge-ras-b10g3kvsg-ras-10j2avsg.html"}, {"marque": "Toshiba", "nom": "Shorai Edge 3.5 kW", "ref": "RAS-B13G3KVSG", "sous_gamme": "Shorai Edge", "ttc": 1164.0, "mon_prix": 1564.42, "url": "https://www.climshop.com/191-shorai-edge-ras-b13g3kvsg-ras-13j2avsg.html"}, {"marque": "Toshiba", "nom": "Shorai Edge 4.6 kW", "ref": "RAS-B16G3KVSG", "sous_gamme": "Shorai Edge", "ttc": 1533.0, "mon_prix": 2060.35, "url": "https://www.climshop.com/192-shorai-edge-ras-b16g3kvsg-ras-16j2avsg.html"}, {"marque": "Toshiba", "nom": "Shorai Edge 5.0 kW", "ref": "RAS-B18G3KVSG", "sous_gamme": "Shorai Edge", "ttc": 1642.0, "mon_prix": 2206.85, "url": "https://www.climshop.com/193-shorai-edge-ras-b18g3kvsg-ras-18j2avsg.html"}, {"marque": "Toshiba", "nom": "Haori 2.5 kW", "ref": "RAS-B10N4KVRG", "sous_gamme": "Haori", "ttc": 1068.0, "mon_prix": 1435.39, "url": "https://www.climshop.com/196-haori-ras-b10n4kvrg-ras-10j2avsg.html"}, {"marque": "Toshiba", "nom": "Haori 4.6 kW", "ref": "RAS-B16N4KVRG", "sous_gamme": "Haori", "ttc": 1636.999999, "mon_prix": 2200.13, "url": "https://www.climshop.com/198-haori-ras-b16n4kvrg-ras-16j2avsg.html"}, {"marque": "Toshiba", "nom": "Bi-split 2.9 kW", "ref": "RAS-2M10G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Bi-split 4.0 kW", "ref": "RAS-2M14G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Bi-split 5.2 kW", "ref": "RAS-2M18G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Tri-split 5.2 kW", "ref": "RAS-3M18G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Tri-split 7.5 kW", "ref": "RAS-3M26G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Quadri-split 8.0 kW", "ref": "RAS-4M27G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Penta-split 10.0 kW", "ref": "RAS-5M34G3AVG-E", "sous_gamme": "Groupes extérieurs", "ttc": 998.0, "mon_prix": 1341.31, "url": "https://www.climshop.com/291-unites-ext-toshiba-ras.html"}, {"marque": "Toshiba", "nom": "Naka 1.5 kW", "ref": "RAS-B05B2KVG-E", "sous_gamme": "Unités intérieures Naka", "ttc": 241.000001, "mon_prix": 323.9, "url": "https://www.climshop.com/845-unites-interieures-naka-toshiba.html"}, {"marque": "Toshiba", "nom": "Naka 2.0 kW", "ref": "RAS-B07B2KVG-E", "sous_gamme": "Unités intérieures Naka", "ttc": 241.000001, "mon_prix": 323.9, "url": "https://www.climshop.com/845-unites-interieures-naka-toshiba.html"}, {"marque": "Toshiba", "nom": "Naka 2.5 kW", "ref": "RAS-B10B2KVG-E", "sous_gamme": "Unités intérieures Naka", "ttc": 241.000001, "mon_prix": 323.9, "url": "https://www.climshop.com/845-unites-interieures-naka-toshiba.html"}, {"marque": "Toshiba", "nom": "Naka 3.3 kW", "ref": "RAS-B13B2KVG-E", "sous_gamme": "Unités intérieures Naka", "ttc": 241.000001, "mon_prix": 323.9, "url": "https://www.climshop.com/845-unites-interieures-naka-toshiba.html"}, {"marque": "Toshiba", "nom": "Naka 4.2 kW", "ref": "RAS-B16B2KVG-E", "sous_gamme": "Unités intérieures Naka", "ttc": 241.000001, "mon_prix": 323.9, "url": "https://www.climshop.com/845-unites-interieures-naka-toshiba.html"}, {"marque": "Toshiba", "nom": "Bi-split Yukai 1.5+3.3 kW", "ref": "BISPLIT-YUKAI-05-13", "sous_gamme": "Packs bi-split", "ttc": 1878.0, "mon_prix": 2524.03, "url": "https://www.climshop.com/260-bisplit-ras2m18g3avge-rasb05e2kvge-rasb13e2kvge.html"}, {"marque": "Daikin", "nom": "Sensira 2.0 kW", "ref": "FTXF20F/RXF20F", "sous_gamme": "Sensira", "ttc": 619.0, "mon_prix": 831.94, "url": "https://www.climshop.com/23-ftxf20e-rxf20e.html"}, {"marque": "Daikin", "nom": "Sensira 2.5 kW", "ref": "FTXF25F/RXF25F", "sous_gamme": "Sensira", "ttc": 645.0, "mon_prix": 866.88, "url": "https://www.climshop.com/58-ftxf25e-rxf25e.html"}, {"marque": "Daikin", "nom": "Sensira 3.5 kW", "ref": "FTXF35F/RXF35F", "sous_gamme": "Sensira", "ttc": 787.0, "mon_prix": 1057.73, "url": "https://www.climshop.com/59-ftxf35e-rxf35e.html"}, {"marque": "Daikin", "nom": "Sensira 5.0 kW", "ref": "FTXF50F/RXF50D", "sous_gamme": "Sensira", "ttc": 1280.0, "mon_prix": 1720.32, "url": "https://www.climshop.com/61-ftxf50e-rxf50e.html"}, {"marque": "Daikin", "nom": "Sensira 7.1 kW", "ref": "FTXF71F/RXF71D", "sous_gamme": "Sensira", "ttc": 1991.0, "mon_prix": 2675.9, "url": "https://www.climshop.com/63-ftxf71e-rxf71e.html"}, {"marque": "Daikin", "nom": "Comfora 2.5 kW", "ref": "FTXP25N/RXP25N", "sous_gamme": "Comfora", "ttc": 963.0, "mon_prix": 1294.27, "url": "https://www.climshop.com/65-ftxp25n-rxp25m.html"}, {"marque": "Daikin", "nom": "Comfora 3.5 kW", "ref": "FTXP35N/RXP35N", "sous_gamme": "Comfora", "ttc": 1072.999999, "mon_prix": 1442.11, "url": "https://www.climshop.com/68-ftxp35n-rxp35n.html"}, {"marque": "Daikin", "nom": "Comfora 5.0 kW", "ref": "FTXP50N/RXP50N", "sous_gamme": "Comfora", "ttc": 1779.0, "mon_prix": 2390.98, "url": "https://www.climshop.com/daikin-ftxp50m-rxp50m-xml-428_429_439_227_312_609-3776.html"}, {"marque": "Daikin", "nom": "Perfera 2.0 kW", "ref": "FTXM20R/RXM20R", "sous_gamme": "Perfera", "ttc": 1074.0, "mon_prix": 1443.46, "url": "https://www.climshop.com/daikin-ftxm20r-rxm20r-xml-428_429_439_227_312_610-3789.html"}, {"marque": "Daikin", "nom": "Perfera 2.5 kW", "ref": "FTXM25R/RXM25R", "sous_gamme": "Perfera", "ttc": 1111.0, "mon_prix": 1493.18, "url": "https://www.climshop.com/72-ftxm25r-rxm25r.html"}, {"marque": "Daikin", "nom": "Perfera 3.5 kW", "ref": "FTXM35R/RXM35R", "sous_gamme": "Perfera", "ttc": 1268.0, "mon_prix": 1704.19, "url": "https://www.climshop.com/73-ftxm35r-rxm35r.html"}, {"marque": "Daikin", "nom": "Perfera 5.0 kW", "ref": "FTXM50R/RXM50R", "sous_gamme": "Perfera", "ttc": 2189.0, "mon_prix": 2942.02, "url": "https://www.climshop.com/daikin-ftxm50r-rxm50r-xml-428_429_439_227_312_610-3792.html"}, {"marque": "Daikin", "nom": "Stylish 2.5 kW", "ref": "FTXA25AW/RXA25A", "sous_gamme": "Stylish", "ttc": 1321.0, "mon_prix": 1775.42, "url": "https://www.climshop.com/90-ftxa25aw-rxa25a-blanc.html"}, {"marque": "Mitsubishi Electric", "nom": "HR 2.5 kW", "ref": "MSZ-HR25VFK", "sous_gamme": "HR Essentiel", "ttc": 610.0, "mon_prix": 819.84, "url": "https://www.climshop.com/126-msz-hr25vf-muz-hr25vf.html"}, {"marque": "Mitsubishi Electric", "nom": "HR 3.5 kW", "ref": "MSZ-HR35VFK", "sous_gamme": "HR Essentiel", "ttc": 757.0, "mon_prix": 1017.41, "url": "https://www.climshop.com/128-msz-hr35vf-muz-hr35vf.html"}, {"marque": "Mitsubishi Electric", "nom": "HR 5.0 kW", "ref": "MSZ-HR50VFK", "sous_gamme": "HR Essentiel", "ttc": 1132.0, "mon_prix": 1521.41, "url": "https://www.climshop.com/130-msz-hr50vf-muz-hr50vf.html"}, {"marque": "Mitsubishi Electric", "nom": "AP 2.5 kW", "ref": "MSZ-AP25VGK", "sous_gamme": "AP Compact", "ttc": 984.0, "mon_prix": 1322.5, "url": "https://www.climshop.com/1msz-ap25vgk-1muz-ap25vg-xml-428_429_439_216_318_619-3865.html"}, {"marque": "Mitsubishi Electric", "nom": "AP 3.5 kW", "ref": "MSZ-AP35VGK", "sous_gamme": "AP Compact", "ttc": 1079.0, "mon_prix": 1450.18, "url": "https://www.climshop.com/1msz-ap35vgk-1muz-ap35vg-xml-428_429_439_216_318_619-3864.html"}, {"marque": "Mitsubishi Electric", "nom": "AP 5.0 kW", "ref": "MSZ-AP50VGK", "sous_gamme": "AP Compact", "ttc": 1755.0, "mon_prix": 2358.72, "url": "https://www.climshop.com/1msz-ap50vgk-1muz-ap50vg-xml-428_429_439_216_318_619-3866.html"}, {"marque": "Mitsubishi Electric", "nom": "EF 2.5 kW", "ref": "MSZ-EF25VGKW", "sous_gamme": "EF Design", "ttc": 1082.0, "mon_prix": 1454.21, "url": "https://www.climshop.com/142-msz-ef25vgkw-muz-ef25vg-blanc.html"}, {"marque": "Mitsubishi Electric", "nom": "EF 3.5 kW", "ref": "MSZ-EF35VGKW", "sous_gamme": "EF Design", "ttc": 1252.0, "mon_prix": 1682.69, "url": "https://www.climshop.com/145-msz-ef35vgkw-muz-ef35vg-blanc.html"}, {"marque": "Mitsubishi Electric", "nom": "LN 2.5 kW", "ref": "MSZ-LN25VG2W", "sous_gamme": "LN Design De Luxe", "ttc": 1555.0, "mon_prix": 2089.92, "url": "https://www.climshop.com/157-msz-ln25vg2w-muz-ln25vghz2-blanc.html"}, {"marque": "Mitsubishi Electric", "nom": "LN 3.5 kW", "ref": "MSZ-LN35VG2W", "sous_gamme": "LN Design De Luxe", "ttc": 1837.0, "mon_prix": 2468.93, "url": "https://www.climshop.com/161-msz-ln35vg2w-muz-ln35vghz2-blanc-hyper.html"}, {"marque": "Atlantic Fujitsu", "nom": "Takao Plus 2.0 kW", "ref": "ASYH7KJCA", "sous_gamme": "Takao Plus", "ttc": 1039.0, "mon_prix": 1396.42, "url": "https://www.climshop.com/218-takao-plus-2kw.html"}, {"marque": "Atlantic Fujitsu", "nom": "Takao Plus 2.5 kW", "ref": "ASYH9KJCA", "sous_gamme": "Takao Plus", "ttc": 1149.0, "mon_prix": 1544.26, "url": "https://www.climshop.com/219-takao-plus-2-5kw.html"}, {"marque": "Atlantic Fujitsu", "nom": "Takao Plus 3.4 kW", "ref": "ASYH12KJCA", "sous_gamme": "Takao Plus", "ttc": 1329.0, "mon_prix": 1786.18, "url": "https://www.climshop.com/220-takao-plus-3-4kw.html"}, {"marque": "Atlantic Fujitsu", "nom": "Takao Plus 4.2 kW", "ref": "ASYH14KJCA", "sous_gamme": "Takao Plus", "ttc": 1609.0, "mon_prix": 2162.5, "url": "https://www.climshop.com/221-takao-plus-4-2kw.html"}, {"marque": "Atlantic Fujitsu", "nom": "Takao M2 3.4 kW", "ref": "ASYG12KMCC", "sous_gamme": "Takao M2", "ttc": 1329.0, "mon_prix": 1786.18, "url": "https://www.climshop.com/220-takao-m2-asyg12-kmccui-ayog.html"}, {"marque": "LG", "nom": "Standard 2.5 kW", "ref": "EZ09CYN", "sous_gamme": "Standard Wifi", "ttc": 669.0, "mon_prix": 899.14, "url": "https://www.climshop.com/223-lg-standard-wifi-s09etnsj-s09etua3.html"}, {"marque": "LG", "nom": "Standard 3.5 kW", "ref": "EZ12CYN", "sous_gamme": "Standard Wifi", "ttc": 729.0, "mon_prix": 979.78, "url": "https://www.climshop.com/standard-wifi-s12etnsj-s12etua3-xml-428_429_439_343_344_637-3953.html"}, {"marque": "LG", "nom": "Standard 5.0 kW", "ref": "EZ18CYN", "sous_gamme": "Standard Wifi", "ttc": 1049.0, "mon_prix": 1409.86, "url": "https://www.climshop.com/225-lg-standard-wifi-s18etnsk-s18etul2.html"}, {"marque": "LG", "nom": "Standard 7.0 kW", "ref": "EZ24CYN", "sous_gamme": "Standard Wifi", "ttc": 1409.0, "mon_prix": 1893.7, "url": "https://www.climshop.com/226-lg-standard-wifi-s24etnsj-s24etua3.html"}, {"marque": "LG", "nom": "Dualcool 2.5 kW", "ref": "H09S1P", "sous_gamme": "Dualcool Premium", "ttc": 1269.0, "mon_prix": 1705.54, "url": "https://www.climshop.com/841-dualcool-premium-lg-h09s1p-ns1-et-h09s1p-u18.html"}, {"marque": "LG", "nom": "Dualcool 3.5 kW", "ref": "H12S1P", "sous_gamme": "Dualcool Premium", "ttc": 1329.0, "mon_prix": 1786.18, "url": "https://www.climshop.com/842-dualcool-premium-lg-h12s1p-ns1-et-h12s1p-u18.html"}, {"marque": "LG", "nom": "Artcool Gallery 3.7 kW", "ref": "A12GA2", "sous_gamme": "Artcool Gallery", "ttc": 2015.0, "mon_prix": 2708.16, "url": "https://www.climshop.com/838-artcool-gallery-premium-a12ga2nse-et-a12ga2u18.html"}, {"marque": "Samsung", "nom": "AR35 2.0 kW", "ref": "AR07TXHQ", "sous_gamme": "AR35 Wifi", "ttc": 495.0, "mon_prix": 665.28, "url": "https://www.climshop.com/903-ar35-wifi-samsung-2000w.html"}, {"marque": "Samsung", "nom": "AR35 3.5 kW", "ref": "AR12TXHQ", "sous_gamme": "AR35 Wifi", "ttc": 555.0, "mon_prix": 745.92, "url": "https://www.climshop.com/904-ar35-wifi-samsung-3500w.html"}, {"marque": "Samsung", "nom": "AR35 7.0 kW", "ref": "AR24TXHQ", "sous_gamme": "AR35 Wifi", "ttc": 1219.0, "mon_prix": 1638.34, "url": "https://www.climshop.com/906-ar35-wifi-samsung-7200w.html"}, {"marque": "Samsung", "nom": "CEBU S2 2.0 kW", "ref": "AR07BXEA", "sous_gamme": "CEBU S2", "ttc": 659.0, "mon_prix": 885.7, "url": "https://www.climshop.com/907-cebus2-samsung-2000w.html"}, {"marque": "Samsung", "nom": "CEBU S2 2.5 kW", "ref": "AR09BXEA", "sous_gamme": "CEBU S2", "ttc": 689.0, "mon_prix": 926.02, "url": "https://www.climshop.com/908-cebus2-samsung-2500w.html"}, {"marque": "Samsung", "nom": "CEBU S2 3.5 kW", "ref": "AR12BXEA", "sous_gamme": "CEBU S2", "ttc": 759.0, "mon_prix": 1020.1, "url": "https://www.climshop.com/909-cebus2-samsung-3500w.html"}, {"marque": "Samsung", "nom": "CEBU S2 5.0 kW", "ref": "AR18BXEA", "sous_gamme": "CEBU S2", "ttc": 1099.0, "mon_prix": 1477.06, "url": "https://www.climshop.com/911-cebus2-samsung-5000w.html"}, {"marque": "Samsung", "nom": "WindFree 2.5 kW", "ref": "AR09BXCA", "sous_gamme": "WindFree Comfort S2", "ttc": 1459.0, "mon_prix": 1960.9, "url": "https://www.climshop.com/912-windfree-samsung-2500w.html"}, {"marque": "Samsung", "nom": "WindFree 3.5 kW", "ref": "AR12BXCA", "sous_gamme": "WindFree Comfort S2", "ttc": 719.0, "mon_prix": 966.34, "url": "https://www.climshop.com/913-windfree-samsung-3500w.html"}, {"marque": "Samsung", "nom": "WindFree 5.0 kW", "ref": "AR18BXCA", "sous_gamme": "WindFree Comfort S2", "ttc": 777.0, "mon_prix": 1044.29, "url": "https://www.climshop.com/914-windfree-samsung-5000w.html"}, {"marque": "Samsung", "nom": "WindFree 7.0 kW", "ref": "AR24BXCA", "sous_gamme": "WindFree Comfort S2", "ttc": 1199.0, "mon_prix": 1611.46, "url": "https://www.climshop.com/915-windfree-samsung-7000w.html"}];
+
+function fmt(v) {
+  return new Intl.NumberFormat('fr-FR', {style:'currency',currency:'EUR'}).format(v);
+}
+
+function search(query) {
+  const q = query.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+  const words = q.split(/\s+/).filter(w => w.length > 1);
+  
+  return PRODUITS.map(p => {
+    const text = (p.marque + " " + p.nom + " " + p.sous_gamme + " " + p.ref)
+      .toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"");
+    let score = 0;
+    words.forEach(w => { if(text.includes(w)) score++; });
+    return {...p, score};
+  })
+  .filter(p => p.score > 0)
+  .sort((a,b) => b.score - a.score)
+  .slice(0, 5);
+}
+
+function showResults(results, query) {
+  const div = document.getElementById('results');
+  if (!results.length) {
+    div.innerHTML = '<div class="no-result">Aucun résultat pour "' + query + '"<br><small>Essaie avec la marque et la puissance</small></div>';
+    return;
+  }
+  div.innerHTML = results.map(p => `
+    <div class="result-card">
+      <div class="result-marque">${p.marque} · ${p.sous_gamme}</div>
+      <div class="result-nom">${p.nom}</div>
+      <div class="result-prix">
+        <div class="prix-block">
+          <div class="prix-label">Prix Climshop TTC</div>
+          <div class="prix-val">${fmt(p.ttc)}</div>
+        </div>
+        <div class="prix-block mon-prix">
+          <div class="prix-label">Mon prix</div>
+          <div class="prix-val">${fmt(p.mon_prix)}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+let recognition = null;
+let listening = false;
+
+function toggleMic() {
+  if (listening) {
+    recognition && recognition.stop();
+    return;
+  }
+  
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('status').textContent = '⚠️ Reconnaissance vocale non supportée';
+    return;
+  }
+  
+  recognition = new SpeechRecognition();
+  recognition.lang = 'fr-FR';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  
+  recognition.onstart = () => {
+    listening = true;
+    document.getElementById('micBtn').classList.add('listening');
+    document.getElementById('status').textContent = '🔴 Écoute en cours...';
+    document.getElementById('transcript').className = 'transcript';
+    document.getElementById('transcript').textContent = '...';
+    document.getElementById('results').innerHTML = '';
+  };
+  
+  recognition.onresult = (e) => {
+    const transcript = Array.from(e.results).map(r => r[0].transcript).join('');
+    const t = document.getElementById('transcript');
+    t.className = 'transcript active';
+    t.textContent = transcript;
+    if (e.results[e.results.length-1].isFinal) {
+      const results = search(transcript);
+      showResults(results, transcript);
+    }
+  };
+  
+  recognition.onend = () => {
+    listening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('status').textContent = 'Appuie sur le micro pour parler';
+  };
+  
+  recognition.onerror = (e) => {
+    listening = false;
+    document.getElementById('micBtn').classList.remove('listening');
+    document.getElementById('status').textContent = '⚠️ Erreur: ' + e.error;
+  };
+  
+  recognition.start();
+}
+</script>
+</body>
+</html>
