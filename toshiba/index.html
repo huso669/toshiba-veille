@@ -1,108 +1,101 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang='fr'>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Tarifs Toshiba — 2D Energies</title>
-<style>
-  :root{--ink:#0f2230;--ink-soft:#3a5060;--line:#dfe7ec;--cold:#1b8fb8;--cold-deep:#0e6f93;--mine:#0a7d5a;--mine-bg:#e7f6ef;--warn-bg:#fff5e6;--warn-line:#f0c879;--warn-ink:#8a5a12;--bg:#f4f8fa;--card:#ffffff;}
-  *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;}
-  .wrap{max-width:980px;margin:0 auto;padding:24px 18px 60px}
-  header.top{text-align:center;padding:8px 0 18px;}
-  h1{font-size:2rem;margin:.2em 0 .15em;letter-spacing:-.01em;}
-  .sub{color:var(--ink-soft);font-size:.95rem;margin:0}
-  .frozen{display:inline-block;margin-top:14px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:10px;padding:10px 16px;font-size:.9rem;font-weight:600;}
-  .frozen span{font-weight:400}
-  nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:22px 0 8px;}
-  nav a{text-decoration:none;color:var(--cold-deep);border:1px solid var(--line);background:var(--card);padding:7px 13px;border-radius:999px;font-size:.88rem;font-weight:500;transition:.15s;}
-  nav a:hover{background:var(--cold);color:#fff;border-color:var(--cold)}
-  nav a[aria-current]{background:var(--cold-deep);color:#fff;border-color:var(--cold-deep)}
-  .formula{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cold);border-radius:10px;padding:12px 16px;margin:18px 0 30px;font-size:.95rem;}
-  .formula b{color:var(--cold-deep)}
-  h2{font-size:1.35rem;margin:34px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);}
-  h3{font-size:1.05rem;margin:24px 0 8px;color:var(--ink-soft)}
-  .tablecard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;overflow-x:auto;}
-  table{border-collapse:collapse;width:100%;min-width:520px}
-  th,td{padding:11px 14px;text-align:left;font-size:.92rem;border-bottom:1px solid var(--line)}
-  thead th{background:#eef4f7;color:var(--ink-soft);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;}
-  tbody tr:last-child td{border-bottom:none}
-  tbody tr:hover{background:#f7fbfd}
-  .model{font-weight:600}
-  .ref{display:block;font-size:.78rem;color:var(--ink-soft);font-weight:400;margin-top:2px}
-  td.ttc{white-space:nowrap}
-  td.ht{white-space:nowrap;color:var(--ink-soft)}
-  td.mine{white-space:nowrap;font-weight:700;color:var(--mine);background:var(--mine-bg)}
-  thead th.mine{color:var(--mine);background:#dcefe6}
-  td.lnk a{color:var(--cold);text-decoration:none;font-weight:600;font-size:.85rem;white-space:nowrap}
-  td.lnk a:hover{text-decoration:underline}
-  footer{margin-top:40px;text-align:center;color:var(--ink-soft);font-size:.82rem}
-  @media (max-width:560px){h1{font-size:1.6rem}.wrap{padding:18px 12px 50px}}
-</style>
+<style>:root{--ink:#0f2230;--ink-soft:#3a5060;--line:#dfe7ec;--cold:#1b8fb8;--cold-deep:#0e6f93;--mine:#0a7d5a;--mine-bg:#e7f6ef;--warn-bg:#fff5e6;--warn-line:#f0c879;--warn-ink:#8a5a12;--bg:#f4f8fa;--card:#ffffff;}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5;}.wrap{max-width:980px;margin:0 auto;padding:24px 18px 60px}header.top{text-align:center;padding:8px 0 18px;}h1{font-size:2rem;margin:.2em 0 .15em;letter-spacing:-.01em;}.sub{color:var(--ink-soft);font-size:.95rem;margin:0}.frozen{display:inline-block;margin-top:14px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);border-radius:10px;padding:10px 16px;font-size:.9rem;font-weight:600;}.frozen span{font-weight:400}nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:22px 0 8px;}nav a{text-decoration:none;color:var(--cold-deep);border:1px solid var(--line);background:var(--card);padding:7px 13px;border-radius:999px;font-size:.88rem;font-weight:500;transition:.15s;}nav a:hover{background:var(--cold);color:#fff;border-color:var(--cold)}nav a[aria-current]{background:var(--cold-deep);color:#fff;border-color:var(--cold-deep)}.formula{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--cold);border-radius:10px;padding:12px 16px;margin:18px 0 30px;font-size:.95rem;}.formula b{color:var(--cold-deep)}h2{font-size:1.35rem;margin:34px 0 4px;padding-bottom:6px;border-bottom:2px solid var(--ink);}h3{font-size:1.05rem;margin:24px 0 8px;color:var(--ink-soft)}.tablecard{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;overflow-x:auto;}table{border-collapse:collapse;width:100%;min-width:520px}th,td{padding:11px 14px;text-align:left;font-size:.92rem;border-bottom:1px solid var(--line)}thead th{background:#eef4f7;color:var(--ink-soft);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;}tbody tr:last-child td{border-bottom:none}tbody tr:hover{background:#f7fbfd}.model{font-weight:600}.ref{display:block;font-size:.78rem;color:var(--ink-soft);font-weight:400;margin-top:2px}td.ttc{white-space:nowrap}td.ht{white-space:nowrap;color:var(--ink-soft)}td.mine{white-space:nowrap;font-weight:700;color:var(--mine);background:var(--mine-bg)}thead th.mine{color:var(--mine);background:#dcefe6}td.lnk a{color:var(--cold);text-decoration:none;font-weight:600;font-size:.85rem;white-space:nowrap}td.lnk a:hover{text-decoration:underline}footer{margin-top:40px;text-align:center;color:var(--ink-soft);font-size:.82rem}@media (max-width:560px){h1{font-size:1.6rem}.wrap{padding:18px 12px 50px}}</style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <h1>❄️ Tarifs Toshiba</h1>
-    <p class="sub">2D Energies · Source des prix : climshop.com</p>
-    <div class="frozen">🔒 Prix figés au 28/06/2026 — <span>à revérifier ponctuellement sur climshop.com</span></div>
-  </header>
-  <nav>
-    <a href="../index.html">🏠 Accueil</a>
-    <a href="index.html" aria-current="page">Toshiba</a>
-    <a href="../daikin/index.html">Daikin</a>
-    <a href="../mitsubishi/index.html">Mitsubishi Electric</a>
-    <a href="../atlantic/index.html">Atlantic Fujitsu</a>
-    <a href="../lg/index.html">LG</a>
-    <a href="../samsung/index.html">Samsung</a>
-  </nav>
-  <div class="formula">💡 <b>Mon prix</b> = prix Climshop TTC × 0,80 × 1,40 × 1,20 <b>(= TTC × 1,344)</b></div>
-  <h2>Mural &amp; Console</h2>
-  <h3>Yukai</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Yukai 1.5/2.0 kW<span class="ref">RAS-B05E2KVG</span></td><td class="ttc">591 €</td><td class="ht">492,50 €</td><td class="mine">794 €</td><td class="lnk"><a href="https://www.climshop.com/181-yukai-ras-b05e2kvg-ras-05e2avg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Yukai 2.0/2.5 kW<span class="ref">RAS-B07E2KVG</span></td><td class="ttc">594 €</td><td class="ht">495,00 €</td><td class="mine">798 €</td><td class="lnk"><a href="https://www.climshop.com/182-yukai-ras-b07e2kvg-ras-07e2avg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Yukai 2.5/3.2 kW<span class="ref">RAS-B10E2KVG</span></td><td class="ttc">637 €</td><td class="ht">530,83 €</td><td class="mine">856 €</td><td class="lnk"><a href="https://www.climshop.com/183-yukai-ras-b10e2kvg-ras-10e2avg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Yukai 3.3/4.0 kW<span class="ref">RAS-B13E2KVG</span></td><td class="ttc">832 €</td><td class="ht">693,33 €</td><td class="mine">1 118 €</td><td class="lnk"><a href="https://www.climshop.com/184-yukai-ras-b13e2kvg-ras-13e2avg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Yukai 4.2/5.0 kW<span class="ref">RAS-B16E2KVG</span></td><td class="ttc">1 057 €</td><td class="ht">880,83 €</td><td class="mine">1 421 €</td><td class="lnk"><a href="https://www.climshop.com/185-yukai-ras-b16e2kvg-ras-16e2avg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <h3>Shorai Edge</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Shorai Edge 2.0/2.5 kW<span class="ref">RAS-B07G3KVSG</span></td><td class="ttc">849 €</td><td class="ht">707,50 €</td><td class="mine">1 141 €</td><td class="lnk"><a href="https://www.climshop.com/189-shorai-edge-ras-b07g3kvsg-ras-07j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Shorai Edge 2.5/3.2 kW<span class="ref">RAS-B10G3KVSG</span></td><td class="ttc">961 €</td><td class="ht">800,83 €</td><td class="mine">1 292 €</td><td class="lnk"><a href="https://www.climshop.com/190-shorai-edge-ras-b10g3kvsg-ras-10j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Shorai Edge 3.5/4.2 kW<span class="ref">RAS-B13G3KVSG</span></td><td class="ttc">1 164 €</td><td class="ht">970,00 €</td><td class="mine">1 564 €</td><td class="lnk"><a href="https://www.climshop.com/191-shorai-edge-ras-b13g3kvsg-ras-13j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Shorai Edge 4.6/5.5 kW<span class="ref">RAS-B16G3KVSG</span></td><td class="ttc">1 533 €</td><td class="ht">1 277,50 €</td><td class="mine">2 060 €</td><td class="lnk"><a href="https://www.climshop.com/192-shorai-edge-ras-b16g3kvsg-ras-16j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Shorai Edge 5.0/6.0 kW<span class="ref">RAS-B18G3KVSG</span></td><td class="ttc">1 642 €</td><td class="ht">1 368,33 €</td><td class="mine">2 207 €</td><td class="lnk"><a href="https://www.climshop.com/193-shorai-edge-ras-b18g3kvsg-ras-18j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <h3>Haori</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Haori 2.5/3.2 kW<span class="ref">RAS-B10N4KVRG</span></td><td class="ttc">1 068 €</td><td class="ht">890,00 €</td><td class="mine">1 435 €</td><td class="lnk"><a href="https://www.climshop.com/196-haori-ras-b10n4kvrg-ras-10j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Haori 4.6/5.5 kW<span class="ref">RAS-B16N4KVRG</span></td><td class="ttc">1 637 €</td><td class="ht">1 364,17 €</td><td class="mine">2 200 €</td><td class="lnk"><a href="https://www.climshop.com/198-haori-ras-b16n4kvrg-ras-16j2avsg.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <h2>Multi-splits</h2>
-  <h3>Groupes extérieurs</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Bi-split 2.9 kW<span class="ref">RAS-2M10G3AVG-E</span></td><td class="ttc">998 €</td><td class="ht">831,67 €</td><td class="mine">1 341 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Bi-split 4.0 kW<span class="ref">RAS-2M14G3AVG-E</span></td><td class="ttc">1 065 €</td><td class="ht">887,50 €</td><td class="mine">1 431 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Bi-split 5.2 kW<span class="ref">RAS-2M18G3AVG-E</span></td><td class="ttc">1 243 €</td><td class="ht">1 035,83 €</td><td class="mine">1 671 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Tri-split 5.2 kW<span class="ref">RAS-3M18G3AVG-E</span></td><td class="ttc">1 677 €</td><td class="ht">1 397,50 €</td><td class="mine">2 254 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Tri-split 7.5 kW<span class="ref">RAS-3M26G3AVG-E</span></td><td class="ttc">1 992 €</td><td class="ht">1 660,00 €</td><td class="mine">2 677 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Quadri-split 8.0 kW<span class="ref">RAS-4M27G3AVG-E</span></td><td class="ttc">2 420 €</td><td class="ht">2 016,67 €</td><td class="mine">3 252 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Penta-split 10.0 kW<span class="ref">RAS-5M34G3AVG-E</span></td><td class="ttc">2 732 €</td><td class="ht">2 276,67 €</td><td class="mine">3 672 €</td><td class="lnk"><a href="https://www.climshop.com/291-unites-ext-toshiba-ras.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <h3>Unités intérieures Naka</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Naka 1.5 kW<span class="ref">RAS-B05B2KVG-E</span></td><td class="ttc">241 €</td><td class="ht">200,83 €</td><td class="mine">324 €</td><td class="lnk"><a href="https://www.climshop.com/845-unites-interieures-naka-toshiba.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Naka 2.0 kW<span class="ref">RAS-B07B2KVG-E</span></td><td class="ttc">245 €</td><td class="ht">204,17 €</td><td class="mine">329 €</td><td class="lnk"><a href="https://www.climshop.com/845-unites-interieures-naka-toshiba.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Naka 2.5 kW<span class="ref">RAS-B10B2KVG-E</span></td><td class="ttc">257 €</td><td class="ht">214,17 €</td><td class="mine">345 €</td><td class="lnk"><a href="https://www.climshop.com/845-unites-interieures-naka-toshiba.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Naka 3.3 kW<span class="ref">RAS-B13B2KVG-E</span></td><td class="ttc">300 €</td><td class="ht">250,00 €</td><td class="mine">403 €</td><td class="lnk"><a href="https://www.climshop.com/845-unites-interieures-naka-toshiba.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-    <tr><td class="model">Naka 4.2 kW<span class="ref">RAS-B16B2KVG-E</span></td><td class="ttc">369 €</td><td class="ht">307,50 €</td><td class="mine">496 €</td><td class="lnk"><a href="https://www.climshop.com/845-unites-interieures-naka-toshiba.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <h3>Packs bi-split</h3>
-  <div class="tablecard"><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class="mine">Mon prix</th><th>Lien</th></tr></thead><tbody>
-    <tr><td class="model">Bi-split Yukai 1.5+3.3 kW<span class="ref">BISPLIT-YUKAI-05-13</span></td><td class="ttc">1 878 €</td><td class="ht">1 565,00 €</td><td class="mine">2 524 €</td><td class="lnk"><a href="https://www.climshop.com/260-bisplit-ras2m18g3avge-rasb05e2kvge-rasb13e2kvge.html" target="_blank" rel="noopener">Voir →</a></td></tr>
-  </tbody></table></div>
-  <footer>Prix figés manuellement au 28/06/2026 · Source : climshop.com · 2D Energies</footer>
+<div class='wrap'>
+<header class='top'>
+<h1>❄️ Tarifs Toshiba</h1>
+<p class='sub'>2D Energies · Source des prix : climshop.com</p>
+<div class='frozen'>🔒 Prix figés au 28/06/2026 — <span>à revérifier ponctuellement sur climshop.com</span></div>
+</header>
+<nav>
+<a href='../index.html'>🏠 Accueil</a>
+<a href='index.html' aria-current='page'>Toshiba</a>
+<a href='../daikin/index.html'>Daikin</a>
+<a href='../mitsubishi/index.html'>Mitsubishi Electric</a>
+<a href='../atlantic/index.html'>Atlantic Fujitsu</a>
+<a href='../lg/index.html'>LG</a>
+<a href='../samsung/index.html'>Samsung</a>
+</nav>
+<div class='formula'>💡 <b>Mon prix</b> = prix Climshop TTC × 0,80 × 1,40 × 1,20 <b>(= TTC × 1,344)</b></div>
+<h2>Mural & Console</h2>
+<h3>Yukai</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Yukai 1.5/2.0 kW<span class='ref'>RAS-B05E2KVG</span></td><td class='ttc'>591 €</td><td class='ht'>492,50 €</td><td class='mine'>794 €</td><td class='lnk'><a href='https://www.climshop.com/181-yukai-ras-b05e2kvg-ras-05e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 2.0/2.5 kW<span class='ref'>RAS-B07E2KVG</span></td><td class='ttc'>594 €</td><td class='ht'>495,00 €</td><td class='mine'>798 €</td><td class='lnk'><a href='https://www.climshop.com/182-yukai-ras-b07e2kvg-ras-07e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 2.5/3.2 kW<span class='ref'>RAS-B10E2KVG</span></td><td class='ttc'>673 €</td><td class='ht'>560,83 €</td><td class='mine'>905 €</td><td class='lnk'><a href='https://www.climshop.com/183-yukai-ras-b10e2kvg-ras-10e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 3.3/4.0 kW<span class='ref'>RAS-B13E2KVG</span></td><td class='ttc'>832 €</td><td class='ht'>693,33 €</td><td class='mine'>1 118 €</td><td class='lnk'><a href='https://www.climshop.com/184-yukai-ras-b13e2kvg-ras-13e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 4.2/5.0 kW<span class='ref'>RAS-B16E2KVG</span></td><td class='ttc'>1 132 €</td><td class='ht'>943,33 €</td><td class='mine'>1 521 €</td><td class='lnk'><a href='https://www.climshop.com/185-yukai-ras-b16e2kvg-ras-16e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 5.0/6.0 kW<span class='ref'>RAS-B18E2KVG</span></td><td class='ttc'>1 344 €</td><td class='ht'>1 120,00 €</td><td class='mine'>1 806 €</td><td class='lnk'><a href='https://www.climshop.com/186-yukai-ras-b18e2kvg-ras-18e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Yukai 6.5/7.0 kW<span class='ref'>RAS-B24E2KVG</span></td><td class='ttc'>1 502 €</td><td class='ht'>1 251,67 €</td><td class='mine'>2 019 €</td><td class='lnk'><a href='https://www.climshop.com/187-yukai-ras-b24e2kvg-ras-24e2avg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Shorai Edge</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Shorai Edge 2.0/2.5 kW<span class='ref'>RAS-B07G3KVSG</span></td><td class='ttc'>849 €</td><td class='ht'>707,50 €</td><td class='mine'>1 141 €</td><td class='lnk'><a href='https://www.climshop.com/189-shorai-edge-ras-b07g3kvsg-ras-07j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 2.5/3.2 kW<span class='ref'>RAS-B10G3KVSG</span></td><td class='ttc'>961 €</td><td class='ht'>800,83 €</td><td class='mine'>1 292 €</td><td class='lnk'><a href='https://www.climshop.com/190-shorai-edge-ras-b10g3kvsg-ras-10j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 3.5/4.2 kW<span class='ref'>RAS-B13G3KVSG</span></td><td class='ttc'>1 164 €</td><td class='ht'>970,00 €</td><td class='mine'>1 564 €</td><td class='lnk'><a href='https://www.climshop.com/191-shorai-edge-ras-b13g3kvsg-ras-13j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 4.6/5.5 kW<span class='ref'>RAS-B16G3KVSG</span></td><td class='ttc'>1 533 €</td><td class='ht'>1 277,50 €</td><td class='mine'>2 060 €</td><td class='lnk'><a href='https://www.climshop.com/192-shorai-edge-ras-b16g3kvsg-ras-16j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 5.0/6.0 kW<span class='ref'>RAS-B18G3KVSG</span></td><td class='ttc'>1 642 €</td><td class='ht'>1 368,33 €</td><td class='mine'>2 207 €</td><td class='lnk'><a href='https://www.climshop.com/193-shorai-edge-ras-b18g3kvsg-ras-18j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 6.1/7.0 kW<span class='ref'>RAS-B22G3KVSG</span></td><td class='ttc'>1 844 €</td><td class='ht'>1 536,67 €</td><td class='mine'>2 478 €</td><td class='lnk'><a href='https://www.climshop.com/194-shorai-edge-ras-b22g3kvsg-ras-22j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Shorai Edge 7.0/8.0 kW<span class='ref'>RAS-B24G3KVSG</span></td><td class='ttc'>2 054 €</td><td class='ht'>1 711,67 €</td><td class='mine'>2 761 €</td><td class='lnk'><a href='https://www.climshop.com/195-shorai-edge-ras-b24g3kvsg-ras-24j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Haori</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Haori 2.5/3.2 kW<span class='ref'>RAS-B10N4KVRG</span></td><td class='ttc'>1 068 €</td><td class='ht'>890,00 €</td><td class='mine'>1 435 €</td><td class='lnk'><a href='https://www.climshop.com/196-haori-ras-b10n4kvrg-ras-10j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Haori 3.5/4.2 kW<span class='ref'>RAS-B13N4KVRG</span></td><td class='ttc'>1 263 €</td><td class='ht'>1 052,50 €</td><td class='mine'>1 697 €</td><td class='lnk'><a href='https://www.climshop.com/197-haori-ras-b13n4kvrg-ras-13j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Haori 4.6/5.5 kW<span class='ref'>RAS-B16N4KVRG</span></td><td class='ttc'>1 637 €</td><td class='ht'>1 364,17 €</td><td class='mine'>2 200 €</td><td class='lnk'><a href='https://www.climshop.com/198-haori-ras-b16n4kvrg-ras-16j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Naka (mono-split)</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Naka 1.5/2.0 kW<span class='ref'>RAS-B05B2KVG</span></td><td class='ttc'>534 €</td><td class='ht'>445,00 €</td><td class='mine'>718 €</td><td class='lnk'><a href='https://www.climshop.com/827-naka-ras-b05b2kvg-et-ras-05b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 2.0/2.5 kW<span class='ref'>RAS-B07B2KVG</span></td><td class='ttc'>547 €</td><td class='ht'>455,83 €</td><td class='mine'>735 €</td><td class='lnk'><a href='https://www.climshop.com/828-naka-ras-b07b2kvg-et-ras-07b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 2.5/3.2 kW<span class='ref'>RAS-B10B2KVG</span></td><td class='ttc'>579 €</td><td class='ht'>482,50 €</td><td class='mine'>778 €</td><td class='lnk'><a href='https://www.climshop.com/829-naka-ras-b10b2kvg-et-ras-10b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 3.3/4.0 kW<span class='ref'>RAS-B13B2KVG</span></td><td class='ttc'>683 €</td><td class='ht'>569,17 €</td><td class='mine'>918 €</td><td class='lnk'><a href='https://www.climshop.com/830-naka-ras-b13b2kvg-et-ras-13b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 4.2/5.0 kW<span class='ref'>RAS-B16B2KVG</span></td><td class='ttc'>988 €</td><td class='ht'>823,33 €</td><td class='mine'>1 328 €</td><td class='lnk'><a href='https://www.climshop.com/831-naka-ras-b16b2kvg-et-ras-16b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 5.0/6.0 kW<span class='ref'>RAS-B18B2KVG</span></td><td class='ttc'>1 121 €</td><td class='ht'>934,17 €</td><td class='mine'>1 507 €</td><td class='lnk'><a href='https://www.climshop.com/832-naka-ras-b18b2kvg-et-ras-18b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 6.5/7.0 kW<span class='ref'>RAS-B24B2KVG</span></td><td class='ttc'>1 437 €</td><td class='ht'>1 197,50 €</td><td class='mine'>1 931 €</td><td class='lnk'><a href='https://www.climshop.com/833-naka-ras-b24b2kvg-et-ras-24b2avg-e.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Super Daiseikai</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Super Daiseikai 2.5/3.2 kW<span class='ref'>RAS-B10S4KVPG</span></td><td class='ttc'>1 670 €</td><td class='ht'>1 391,67 €</td><td class='mine'>2 244 €</td><td class='lnk'><a href='https://www.climshop.com/834-RAS-B10S4KVPG-E-et-RAS-10S4AVPG-E.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Super Daiseikai 3.5/4.2 kW<span class='ref'>RAS-B13S4KVPG</span></td><td class='ttc'>1 757 €</td><td class='ht'>1 464,17 €</td><td class='mine'>2 361 €</td><td class='lnk'><a href='https://www.climshop.com/835-RAS-B13S4KVPG-E-et-RAS-13S4AVPG-E.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Super Daiseikai 5.0/6.0 kW<span class='ref'>RAS-B18S4KVPG</span></td><td class='ttc'>2 108 €</td><td class='ht'>1 756,67 €</td><td class='mine'>2 833 €</td><td class='lnk'><a href='https://www.climshop.com/836-RAS-B18S4KVPG-E-et-RAS-18S4AVPG-E.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Console Double Flux</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Console DF 2.5/3.2 kW<span class='ref'>RAS-B10J2FVG</span></td><td class='ttc'>1 389 €</td><td class='ht'>1 157,50 €</td><td class='mine'>1 867 €</td><td class='lnk'><a href='https://www.climshop.com/203-console-double-flux-ras-b10j2fvg-et-ras-10j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Console DF 3.5/4.2 kW<span class='ref'>RAS-B13J2FVG</span></td><td class='ttc'>1 608 €</td><td class='ht'>1 340,00 €</td><td class='mine'>2 161 €</td><td class='lnk'><a href='https://www.climshop.com/204-console-double-flux-ras-b13j2fvg-ras-13j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Console DF 5.0/6.0 kW<span class='ref'>RAS-B18J2FVG</span></td><td class='ttc'>1 919 €</td><td class='ht'>1 599,17 €</td><td class='mine'>2 579 €</td><td class='lnk'><a href='https://www.climshop.com/205-console-double-flux-ras-b18j2fvg-e-ras-18j2avsg.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h2>Multi-splits</h2>
+<h3>Groupes extérieurs</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Bi-split 2.9 kW<span class='ref'>RAS-2M10G3AVG-E</span></td><td class='ttc'>998 €</td><td class='ht'>831,67 €</td><td class='mine'>1 341 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Bi-split 4.0 kW<span class='ref'>RAS-2M14G3AVG-E</span></td><td class='ttc'>1 065 €</td><td class='ht'>887,50 €</td><td class='mine'>1 431 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Bi-split 5.2 kW<span class='ref'>RAS-2M18G3AVG-E</span></td><td class='ttc'>1 243 €</td><td class='ht'>1 035,83 €</td><td class='mine'>1 671 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Tri-split 5.2 kW<span class='ref'>RAS-3M18G3AVG-E</span></td><td class='ttc'>1 677 €</td><td class='ht'>1 397,50 €</td><td class='mine'>2 254 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Tri-split 7.5 kW<span class='ref'>RAS-3M26G3AVG-E</span></td><td class='ttc'>1 992 €</td><td class='ht'>1 660,00 €</td><td class='mine'>2 677 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Quadri-split 8.0 kW<span class='ref'>RAS-4M27G3AVG-E</span></td><td class='ttc'>2 420 €</td><td class='ht'>2 016,67 €</td><td class='mine'>3 252 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Penta-split 10.0 kW<span class='ref'>RAS-5M34G3AVG-E</span></td><td class='ttc'>2 732 €</td><td class='ht'>2 276,67 €</td><td class='mine'>3 672 €</td><td class='lnk'><a href='https://www.climshop.com/291-unites-ext-toshiba-ras.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Unités intérieures Naka (multi-split)</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Naka 1.5 kW<span class='ref'>RAS-B05B2KVG-E</span></td><td class='ttc'>241 €</td><td class='ht'>200,83 €</td><td class='mine'>324 €</td><td class='lnk'><a href='https://www.climshop.com/845-unites-interieures-naka-toshiba.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 2.0 kW<span class='ref'>RAS-B07B2KVG-E</span></td><td class='ttc'>245 €</td><td class='ht'>204,17 €</td><td class='mine'>329 €</td><td class='lnk'><a href='https://www.climshop.com/845-unites-interieures-naka-toshiba.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 2.5 kW<span class='ref'>RAS-B10B2KVG-E</span></td><td class='ttc'>257 €</td><td class='ht'>214,17 €</td><td class='mine'>345 €</td><td class='lnk'><a href='https://www.climshop.com/845-unites-interieures-naka-toshiba.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 3.3 kW<span class='ref'>RAS-B13B2KVG-E</span></td><td class='ttc'>300 €</td><td class='ht'>250,00 €</td><td class='mine'>403 €</td><td class='lnk'><a href='https://www.climshop.com/845-unites-interieures-naka-toshiba.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+<tr><td class='model'>Naka 4.2 kW<span class='ref'>RAS-B16B2KVG-E</span></td><td class='ttc'>369 €</td><td class='ht'>307,50 €</td><td class='mine'>496 €</td><td class='lnk'><a href='https://www.climshop.com/845-unites-interieures-naka-toshiba.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<h3>Packs bi-split</h3>
+<div class='tablecard'><table><thead><tr><th>Modèle (Froid/Chaud)</th><th>Climshop TTC</th><th>HT</th><th class='mine'>Mon prix</th><th>Lien</th></tr></thead><tbody>
+<tr><td class='model'>Bi-split Yukai 1.5+3.3 kW<span class='ref'>BISPLIT-YUKAI-05-13</span></td><td class='ttc'>1 878 €</td><td class='ht'>1 565,00 €</td><td class='mine'>2 524 €</td><td class='lnk'><a href='https://www.climshop.com/260-bisplit-ras2m18g3avge-rasb05e2kvge-rasb13e2kvge.html' target='_blank' rel='noopener'>Voir →</a></td></tr>
+</tbody></table></div>
+<footer>Prix figés manuellement au 28/06/2026 · Source : climshop.com · 2D Energies</footer>
 </div>
 </body>
 </html>
